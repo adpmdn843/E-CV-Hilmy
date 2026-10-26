@@ -1,0 +1,5188 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Satu Garis</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f5f7fb;
+      color: #1f2937;
+      min-height: 100vh;
+    }
+
+    #loginPage {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: linear-gradient(135deg, #f5f7fb, #e9edf5);
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 430px;
+      background: #fff;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.10);
+    }
+
+    .logo {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 20px;
+      border-radius: 18px;
+      background: #111827;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+    }
+
+    .login-card h1 {
+      text-align: center;
+      font-size: 30px;
+      color: #111827;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    .form-group { margin-bottom: 18px; }
+
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #374151;
+    }
+
+    .input-box { position: relative; }
+
+    .input-box > i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      z-index: 2;
+    }
+
+    .input-box input {
+      width: 100%;
+      height: 50px;
+      border: 1px solid #d1d5db;
+      border-radius: 11px;
+      padding: 0 45px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .input-box input:focus {
+      border-color: #111827;
+      box-shadow: 0 0 0 3px rgba(17,24,39,.08);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 8px;
+      top: 6px;
+      width: 38px;
+      height: 38px;
+      border: none;
+      background: transparent;
+      color: #9ca3af;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    .password-toggle:hover { background: #f3f4f6; }
+
+    .login-options {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      margin-bottom: 18px;
+    }
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #6b7280;
+    }
+
+    .login-options a {
+      color: #111827;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .login-message {
+      min-height: 20px;
+      text-align: center;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .login-message.error { color: #dc2626; }
+    .login-message.success { color: #16a34a; }
+
+    .login-button {
+      width: 100%;
+      height: 52px;
+      border: none;
+      border-radius: 11px;
+      background: #111827;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .login-button:hover { background: #1f2937; }
+    .login-button:disabled { opacity: .6; cursor: not-allowed; }
+
+    .spin { animation: spin .8s linear infinite; }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .login-footer {
+      margin-top: 28px;
+      text-align: center;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    #dashboardPage { display: none; min-height: 100vh; }
+
+    .page-loading {
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border-radius: 14px;
+    }
+
+    .page-loading-inner {
+      text-align: center;
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    .page-loading-inner i {
+      display: block;
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .page-error {
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border-radius: 14px;
+    }
+
+    .page-error-inner {
+      text-align: center;
+      color: #dc2626;
+      font-size: 13px;
+    }
+
+    .page-error-inner i {
+      display: block;
+      font-size: 30px;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div id="loginPage">
+  <div class="login-card">
+    <div class="logo">
+      <i class="fa-solid fa-layer-group"></i>
+    </div>
+
+    <h1>Satu Garis</h1>
+
+    <p class="subtitle">Sistem Absensi &amp; Laporan PKL</p>
+
+    <form id="loginForm">
+      <div class="form-group">
+        <label>ID Admin</label>
+        <div class="input-box">
+          <i class="fa-solid fa-user-shield"></i>
+          <input id="username" type="text" placeholder="Masukkan ID Admin"
+                 autocomplete="username" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <div class="input-box">
+          <i class="fa-solid fa-lock"></i>
+          <input id="password" type="password" placeholder="Masukkan password"
+                 autocomplete="current-password" required>
+          <button type="button" class="password-toggle" id="passwordToggle">
+            <i class="fa-solid fa-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="login-options">
+        <label class="remember">
+          <input type="checkbox" id="remember">
+          Ingat saya
+        </label>
+
+        <a href="#" id="forgotPassword">Lupa password?</a>
+      </div>
+
+      <div id="loginMessage" class="login-message"></div>
+
+      <button type="submit" class="login-button" id="loginButton">
+        <span id="buttonText">Masuk</span>
+        <i id="buttonIcon" class="fa-solid fa-arrow-right"></i>
+      </button>
+    </form>
+
+    <div class="login-footer">Satu Garis V.1 • © 2026</div>
+  </div>
+</div>
+
+<div id="dashboardPage"></div>
+
+<script>
+/* ============================================================
+   ELEMENT
+   ============================================================ */
+
+const loginPage = document.getElementById('loginPage');
+const dashboardPage = document.getElementById('dashboardPage');
+const loginForm = document.getElementById('loginForm');
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+const passwordToggle = document.getElementById('passwordToggle');
+const rememberCheckbox = document.getElementById('remember');
+const forgotPassword = document.getElementById('forgotPassword');
+const loginMessage = document.getElementById('loginMessage');
+const loginButton = document.getElementById('loginButton');
+const buttonText = document.getElementById('buttonText');
+const buttonIcon = document.getElementById('buttonIcon');
+
+/* ============================================================
+   STORAGE
+   ============================================================ */
+
+const ADMIN_STORAGE_KEY = 'satuGarisAdmin';
+const USERNAME_STORAGE_KEY = 'satuGarisUsername';
+
+/* ============================================================
+   SISWA STATE
+   ============================================================ */
+
+let siswaData = [];
+let siswaFilteredData = [];
+let siswaCurrentPage = 1;
+let siswaPerPage = 10;
+let siswaSelectedItem = null;
+let siswaDeleteItem = null;
+let siswaInitialized = false;
+let siswaEventsAttached = false;
+
+/* ============================================================
+   PASSWORD TOGGLE
+   ============================================================ */
+
+passwordToggle.addEventListener('click', function () {
+  const show = passwordInput.type === 'password';
+  passwordInput.type = show ? 'text' : 'password';
+
+  const icon = passwordToggle.querySelector('i');
+
+  if (icon) {
+    icon.className = show
+      ? 'fa-solid fa-eye-slash'
+      : 'fa-solid fa-eye';
+  }
+});
+
+/* ============================================================
+   FORGOT PASSWORD
+   ============================================================ */
+
+forgotPassword.addEventListener('click', function (event) {
+  event.preventDefault();
+  alert('Silakan hubungi administrator untuk reset password.');
+});
+
+/* ============================================================
+   LOGIN
+   ============================================================ */
+
+loginForm.addEventListener('submit', function (event) {
+  event.preventDefault();
+
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value;
+
+  clearMessage();
+
+  if (!username) {
+    showError('ID Admin wajib diisi.');
+    return;
+  }
+
+  if (!password) {
+    showError('Password wajib diisi.');
+    return;
+  }
+
+  setLoginLoading(true);
+
+  google.script.run
+    .withSuccessHandler(function (result) {
+      console.log('Login:', result);
+
+      if (result && result.success) {
+        try {
+          localStorage.setItem(
+            ADMIN_STORAGE_KEY,
+            JSON.stringify(result.user)
+          );
+        } catch (error) {
+          console.error('Gagal menyimpan login:', error);
+        }
+
+        if (rememberCheckbox.checked) {
+          localStorage.setItem(USERNAME_STORAGE_KEY, username);
+        } else {
+          localStorage.removeItem(USERNAME_STORAGE_KEY);
+        }
+
+        showSuccess('Login berhasil.');
+        openDashboard();
+      } else {
+        setLoginLoading(false);
+
+        showError(
+          result && result.message
+            ? result.message
+            : 'Login gagal.'
+        );
+
+        passwordInput.value = '';
+      }
+    })
+    .withFailureHandler(function (error) {
+      console.error('Login error:', error);
+      setLoginLoading(false);
+      showError('Terjadi kesalahan pada server.');
+    })
+    .loginUser(username, password);
+});
+
+/* ============================================================
+   OPEN DASHBOARD
+   ============================================================ */
+
+function openDashboard() {
+  loginPage.style.display = 'none';
+  dashboardPage.style.display = 'block';
+
+  dashboardPage.innerHTML = `
+    <div style="
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:Arial,sans-serif;
+      color:#6b7280;
+      background:#f5f7fb;
+    ">
+      <div style="text-align:center;">
+        <i class="fa-solid fa-spinner spin" style="
+          font-size:28px;
+          margin-bottom:12px;
+        "></i>
+        <div>Membuka dashboard...</div>
+      </div>
+    </div>
+  `;
+
+  google.script.run
+    .withSuccessHandler(function (html) {
+      if (!html) {
+        showDashboardError('Dashboard kosong.');
+        return;
+      }
+
+      dashboardPage.innerHTML = html;
+      initializeDashboard();
+    })
+    .withFailureHandler(function (error) {
+      console.error('Dashboard gagal dimuat:', error);
+
+      showDashboardError(
+        error && error.message
+          ? error.message
+          : 'Dashboard gagal dimuat.'
+      );
+    })
+    .include('dashboard');
+}
+
+/* ============================================================
+   INITIALIZE DASHBOARD
+   ============================================================ */
+
+function initializeDashboard() {
+  const admin = getSavedAdmin();
+
+  if (!admin || !admin.username) {
+    logout();
+    return;
+  }
+
+  setAdminInfo(admin);
+
+  const logoutButton = document.getElementById('logoutButton');
+
+  if (logoutButton) {
+    logoutButton.onclick = logout;
+  }
+
+  setActiveMenu('menuDashboard');
+  loadDashboardData();
+}
+
+/* ============================================================
+   GET SAVED ADMIN
+   ============================================================ */
+
+function getSavedAdmin() {
+  try {
+    const savedAdmin = localStorage.getItem(ADMIN_STORAGE_KEY);
+
+    if (!savedAdmin) {
+      return null;
+    }
+
+    return JSON.parse(savedAdmin);
+  } catch (error) {
+    console.error('Data admin tidak valid:', error);
+    return null;
+  }
+}
+
+/* ============================================================
+   SET ADMIN INFO
+   ============================================================ */
+
+function setAdminInfo(admin) {
+  const name = admin.nama || admin.username || 'Admin';
+  const role = admin.role || 'Administrator';
+
+  const adminName = document.getElementById('adminName');
+  const sidebarName = document.getElementById('sidebarName');
+  const sidebarRole = document.getElementById('sidebarRole');
+
+  if (adminName) adminName.textContent = name;
+  if (sidebarName) sidebarName.textContent = name;
+  if (sidebarRole) sidebarRole.textContent = role;
+}
+
+/* ============================================================
+   SET ACTIVE MENU
+   ============================================================ */
+
+function setActiveMenu(menuId) {
+  const menuIds = [
+    'menuDashboard',
+    'menuSiswa',
+    'menuAbsensi',
+    'menuLaporan'
+  ];
+
+  menuIds.forEach(function (id) {
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    if (id === menuId) {
+      element.classList.add('active');
+    } else {
+      element.classList.remove('active');
+    }
+  });
+}
+
+/* ============================================================
+   OPEN DASHBOARD HOME
+   ============================================================ */
+
+function openDashboardHome() {
+  const content = document.getElementById('dashboardContent');
+
+  if (!content) {
+    console.error('dashboardContent tidak ditemukan.');
+    return;
+  }
+
+  setActiveMenu('menuDashboard');
+
+  const title = document.getElementById('pageTitle');
+  const subtitle = document.getElementById('pageSubtitle');
+
+  if (title) title.textContent = 'Dashboard';
+  if (subtitle) subtitle.textContent = 'Sistem Absensi & Laporan PKL';
+
+  content.innerHTML = `
+    <div class="page-loading">
+      <div class="page-loading-inner">
+        <i class="fa-solid fa-spinner spin"></i>
+        <div>Memuat dashboard...</div>
+      </div>
+    </div>
+  `;
+
+  google.script.run
+    .withSuccessHandler(function (html) {
+      if (!html) {
+        content.innerHTML = `
+          <div class="page-error">
+            <div class="page-error-inner">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <div>Dashboard kosong.</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const temp = document.createElement('div');
+      temp.innerHTML = html;
+
+      const home = temp.querySelector('#dashboardHome');
+
+      if (!home) {
+        content.innerHTML = `
+          <div class="page-error">
+            <div class="page-error-inner">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <div>Konten dashboard tidak ditemukan.</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      content.innerHTML = home.outerHTML;
+
+      const admin = getSavedAdmin();
+      if (admin) setAdminInfo(admin);
+
+      loadDashboardData();
+    })
+    .withFailureHandler(function (error) {
+      console.error('Dashboard gagal dimuat:', error);
+
+      content.innerHTML = `
+        <div class="page-error">
+          <div class="page-error-inner">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <div>Gagal memuat dashboard.</div>
+          </div>
+        </div>
+      `;
+    })
+    .include('dashboard');
+}
+
+/* ============================================================
+   OPEN SISWA / PESERTA PKL
+   ============================================================ */
+
+function openSiswaPage() {
+  const content = document.getElementById('dashboardContent');
+
+  if (!content) {
+    console.error('[SISWA] dashboardContent tidak ditemukan.');
+    return;
+  }
+
+  setActiveMenu('menuSiswa');
+
+  const title = document.getElementById('pageTitle');
+  const subtitle = document.getElementById('pageSubtitle');
+
+  if (title) title.textContent = 'Peserta PKL';
+  if (subtitle) subtitle.textContent = 'Data peserta PKL';
+
+  content.innerHTML = `
+    <div class="page-loading">
+      <div class="page-loading-inner">
+        <i class="fa-solid fa-spinner spin"></i>
+        <div>Memuat halaman Peserta PKL...</div>
+      </div>
+    </div>
+  `;
+
+  google.script.run
+    .withSuccessHandler(function (html) {
+      console.log('[SISWA] HTML berhasil diterima');
+
+      if (!html) {
+        content.innerHTML = `
+          <div class="page-error">
+            <div class="page-error-inner">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <div>Halaman Peserta PKL kosong.</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const temp = document.createElement('div');
+      temp.innerHTML = html;
+
+      temp.querySelectorAll('script').forEach(function (script) {
+        script.remove();
+      });
+
+      content.innerHTML = temp.innerHTML;
+
+      console.log('[SISWA] Fragment berhasil dimasukkan.');
+
+      try {
+        initializeSiswa();
+      } catch (error) {
+        console.error('[SISWA] initializeSiswa error:', error);
+        showSiswaLoadError(
+          error && error.message
+            ? error.message
+            : String(error)
+        );
+      }
+    })
+    .withFailureHandler(function (error) {
+      console.error('[SISWA] include error:', error);
+
+      content.innerHTML = `
+        <div class="page-error">
+          <div class="page-error-inner">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <div>Gagal memuat Peserta PKL.</div>
+            <small style="
+              display:block;
+              margin-top:8px;
+              color:#6b7280;
+            ">
+              ${escapeHtml(
+                error && error.message
+                  ? error.message
+                  : 'Terjadi kesalahan pada server.'
+              )}
+            </small>
+          </div>
+        </div>
+      `;
+    })
+    .include('siswa');
+}
+
+/* ============================================================
+   INITIALIZE SISWA
+   ============================================================ */
+
+function initializeSiswa() {
+  console.log('[SISWA] initializeSiswa()');
+
+  siswaInitialized = true;
+  siswaEventsAttached = false;
+
+  attachSiswaEvents();
+  loadSiswaData();
+}
+
+/* ============================================================
+   ATTACH SISWA EVENTS
+   ============================================================ */
+
+function attachSiswaEvents() {
+  if (siswaEventsAttached) return;
+
+  const searchInput = document.getElementById('siswaSearch');
+
+  if (searchInput) {
+    searchInput.oninput = function () {
+      filterSiswaTable();
+    };
+  }
+
+  const sekolahFilter = document.getElementById('filterSekolah');
+
+  if (sekolahFilter) {
+    sekolahFilter.onchange = function () {
+      filterSiswaTable();
+    };
+  }
+
+  const divisiFilter = document.getElementById('filterDivisi');
+
+  if (divisiFilter) {
+    divisiFilter.onchange = function () {
+      filterSiswaTable();
+    };
+  }
+
+  const statusFilter = document.getElementById('filterStatus');
+
+  if (statusFilter) {
+    statusFilter.onchange = function () {
+      filterSiswaTable();
+    };
+  }
+
+  const genderFilter = document.getElementById('filterGender');
+
+  if (genderFilter) {
+    genderFilter.onchange = function () {
+      filterSiswaTable();
+    };
+  }
+
+  const fotoInput = document.getElementById('siswaFoto');
+
+  if (fotoInput) {
+    fotoInput.onchange = function () {
+      const file = this.files && this.files[0];
+
+      if (!file) {
+        resetFotoPreview();
+        return;
+      }
+
+      const allowed = [
+        'image/jpeg',
+        'image/jpg',
+        'image/png',
+        'image/webp'
+      ];
+
+      if (!allowed.includes(file.type)) {
+        this.value = '';
+        resetFotoPreview();
+        showSiswaToast(
+          'Format foto tidak didukung. Gunakan JPG, PNG atau WEBP.',
+          'error'
+        );
+        return;
+      }
+
+      const maxSize = 2 * 1024 * 1024;
+
+      if (file.size > maxSize) {
+        this.value = '';
+        resetFotoPreview();
+        showSiswaToast(
+          'Ukuran foto maksimal 2 MB.',
+          'error'
+        );
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        updateFotoPreview(event.target.result);
+      };
+
+      reader.onerror = function () {
+        resetFotoPreview();
+        showSiswaToast(
+          'Foto gagal dibaca.',
+          'error'
+        );
+      };
+
+      reader.readAsDataURL(file);
+    };
+  }
+
+  const form = document.getElementById('siswaForm');
+
+  if (form) {
+    form.onsubmit = function (event) {
+      submitSiswaForm(event);
+    };
+  }
+
+  document.querySelectorAll('[data-siswa-close]').forEach(function (button) {
+    button.onclick = function () {
+      const target = this.getAttribute('data-siswa-close');
+      if (target) hideModal(target);
+    };
+  });
+
+  siswaEventsAttached = true;
+}
+
+/* ============================================================
+   LOAD SISWA DATA
+   ============================================================ */
+
+function loadSiswaData() {
+  console.log('[SISWA] Memanggil getSiswaData()...');
+
+  const tbody = document.getElementById('siswaTableBody');
+
+  if (tbody) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="20" style="
+          padding:40px;
+          text-align:center;
+          color:#6b7280;
+        ">
+          <i class="fa-solid fa-spinner fa-spin" style="
+            font-size:24px;
+            margin-bottom:10px;
+          "></i>
+          <br>
+          Memuat data peserta PKL...
+        </td>
+      </tr>
+    `;
+  }
+
+  google.script.run
+    .withSuccessHandler(function (result) {
+      console.log('[SISWA] Data:', result);
+
+      if (!result || !result.success) {
+        siswaData = [];
+        siswaFilteredData = [];
+
+        showSiswaLoadError(
+          result && result.message
+            ? result.message
+            : 'Data peserta PKL gagal diambil.'
+        );
+        return;
+      }
+
+      siswaData = Array.isArray(result.data)
+        ? result.data.map(normalizeSiswaData)
+        : [];
+
+      siswaFilteredData = siswaData.slice();
+      siswaCurrentPage = 1;
+
+      updateSiswaStatistics();
+      buildSiswaFilters();
+      renderSiswaTable();
+
+      console.log('[SISWA] Total data:', siswaData.length);
+    })
+    .withFailureHandler(function (error) {
+      console.error('[SISWA] getSiswaData error:', error);
+
+      showSiswaLoadError(
+        error && error.message
+          ? error.message
+          : 'Gagal mengambil data peserta PKL.'
+      );
+    })
+    .getSiswaData();
+}
+
+/* ============================================================
+   NORMALIZE SISWA DATA
+   ============================================================ */
+
+function normalizeSiswaData(item) {
+  item = item || {};
+
+  return {
+    id_pkl: String(item.id_pkl || item.idPkl || '').trim(),
+    nama_siswa: String(item.nama_siswa || item.nama || '').trim(),
+    asal_sekolah: String(item.asal_sekolah || item.asalSekolah || '').trim(),
+    jurusan: String(item.jurusan || '').trim(),
+    jenis_kelamin: String(item.jenis_kelamin || item.gender || '').trim(),
+    kelas: String(item.kelas || '').trim(),
+    divisi: String(item.divisi || '').trim(),
+    bagian: String(item.bagian || '').trim(),
+    password: String(item.password || ''),
+    date_join: String(item.date_join || item.dateJoin || '').trim(),
+    date_create: String(item.date_create || item.dateCreate || '').trim(),
+    timestamp: String(item.timestamp || '').trim(),
+    foto: String(item.foto || '').trim(),
+    status: String(item.status || '').trim(),
+    email: String(item.email || '').trim()
+  };
+}
+
+/* ============================================================
+   UPDATE SISWA STATISTICS
+   ============================================================ */
+
+function updateSiswaStatistics() {
+  const siswaValid = siswaData.filter(function (item) {
+    return String(item.nama_siswa || '').trim() !== '';
+  });
+
+  const total = siswaValid.length;
+
+  const aktif = siswaValid.filter(function (item) {
+    return String(item.status || '').trim().toLowerCase() === 'aktif';
+  }).length;
+
+  const tidakAktif = total - aktif;
+
+  const lakiLaki = siswaValid.filter(function (item) {
+    const gender = String(item.jenis_kelamin || '').trim().toLowerCase();
+
+    return (
+      gender === 'laki-laki' ||
+      gender === 'laki laki' ||
+      gender === 'laki'
+    );
+  }).length;
+
+  const perempuan = siswaValid.filter(function (item) {
+    const gender = String(item.jenis_kelamin || '').trim().toLowerCase();
+
+    return (
+      gender === 'perempuan' ||
+      gender === 'wanita'
+    );
+  }).length;
+
+  setValue('siswaTotal', total);
+  setValue('siswaAktif', aktif);
+  setValue('siswaTidakAktif', tidakAktif);
+  setValue('siswaSekolah', lakiLaki + ' / ' + perempuan);
+}
+
+/* ============================================================
+   BUILD FILTERS
+   ============================================================ */
+
+function buildSiswaFilters() {
+  buildSelectOptions(
+    'filterSekolah',
+    siswaData.map(function (item) {
+      return item.asal_sekolah;
+    })
+  );
+
+  buildSelectOptions(
+    'filterDivisi',
+    siswaData.map(function (item) {
+      return item.divisi;
+    })
+  );
+
+  buildSelectOptions(
+    'filterStatus',
+    siswaData.map(function (item) {
+      return item.status;
+    })
+  );
+
+  buildSelectOptions(
+    'filterGender',
+    siswaData.map(function (item) {
+      return item.jenis_kelamin;
+    })
+  );
+}
+
+/* ============================================================
+   BUILD SELECT OPTIONS
+   ============================================================ */
+
+function buildSelectOptions(id, values) {
+  const select = document.getElementById(id);
+
+  if (!select) return;
+
+  const current = select.value;
+
+  const unique = Array.from(
+    new Set(
+      values
+        .map(function (value) {
+          return String(value || '').trim();
+        })
+        .filter(Boolean)
+    )
+  ).sort(function (a, b) {
+    return a.localeCompare(b, 'id');
+  });
+
+  const firstOption = select.options[0];
+
+  select.innerHTML = '';
+
+  if (firstOption) {
+    const option = document.createElement('option');
+    option.value = firstOption.value || '';
+    option.textContent = firstOption.textContent || 'Semua';
+    select.appendChild(option);
+  } else {
+    const option = document.createElement('option');
+    option.value = '';
+    option.textContent = 'Semua';
+    select.appendChild(option);
+  }
+
+  unique.forEach(function (value) {
+    const option = document.createElement('option');
+    option.value = value;
+    option.textContent = value;
+    select.appendChild(option);
+  });
+
+  if (unique.includes(current)) {
+    select.value = current;
+  }
+}
+
+/* ============================================================
+   FILTER SISWA
+   ============================================================ */
+
+function filterSiswaTable() {
+  const search = getInputValue('siswaSearch').toLowerCase();
+  const sekolah = getInputValue('filterSekolah').toLowerCase();
+  const divisi = getInputValue('filterDivisi').toLowerCase();
+  const status = getInputValue('filterStatus').toLowerCase();
+  const gender = getInputValue('filterGender').toLowerCase();
+
+  siswaFilteredData = siswaData.filter(function (item) {
+    const searchable = [
+      item.id_pkl,
+      item.nama_siswa,
+      item.asal_sekolah,
+      item.jurusan,
+      item.jenis_kelamin,
+      item.kelas,
+      item.divisi,
+      item.bagian,
+      item.status,
+      item.email
+    ].join(' ').toLowerCase();
+
+    return (
+      (!search || searchable.includes(search)) &&
+      (!sekolah || item.asal_sekolah.toLowerCase() === sekolah) &&
+      (!divisi || item.divisi.toLowerCase() === divisi) &&
+      (!status || item.status.toLowerCase() === status) &&
+      (!gender || item.jenis_kelamin.toLowerCase() === gender)
+    );
+  });
+
+  siswaCurrentPage = 1;
+  renderSiswaTable();
+}
+
+/* ============================================================
+   RENDER SISWA TABLE
+   ============================================================ */
+
+function renderSiswaTable() {
+  const tbody = document.getElementById('siswaTableBody');
+  if (!tbody) return;
+
+  const totalData = siswaFilteredData.length;
+
+  if (totalData === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="9" style="
+          text-align:center;
+          padding:40px;
+          color:#6b7280;
+        ">
+          <i class="fa-solid fa-user-slash" style="
+            font-size:28px;
+            margin-bottom:10px;
+          "></i>
+          <div>Data peserta PKL tidak ditemukan.</div>
+        </td>
+      </tr>
+    `;
+
+    updateSiswaPagination();
+    return;
+  }
+
+  const start = (siswaCurrentPage - 1) * siswaPerPage;
+  const end = Math.min(start + siswaPerPage, totalData);
+  const pageData = siswaFilteredData.slice(start, end);
+
+  tbody.innerHTML = pageData.map(function (siswa) {
+    const status = String(siswa.status || '').trim();
+    const statusLower = status.toLowerCase();
+
+    let statusClass = 'status-default';
+
+    if (statusLower === 'aktif') {
+      statusClass = 'status-active';
+    } else if (
+      statusLower === 'nonaktif' ||
+      statusLower === 'tidak aktif'
+    ) {
+      statusClass = 'status-inactive';
+    }
+
+    const id = escapeJs(siswa.id_pkl || '');
+
+    return `
+      <tr>
+        <td>
+          <strong>${escapeHtml(siswa.nama_siswa || '-')}</strong>
+        </td>
+
+        <td>${escapeHtml(siswa.asal_sekolah || '-')}</td>
+        <td>${escapeHtml(siswa.jurusan || '-')}</td>
+        <td>${escapeHtml(siswa.jenis_kelamin || '-')}</td>
+        <td>${escapeHtml(siswa.kelas || '-')}</td>
+        <td>${escapeHtml(siswa.divisi || '-')}</td>
+        <td>${escapeHtml(siswa.bagian || '-')}</td>
+
+        <td>
+          <span class="status-badge ${statusClass}">
+            ${escapeHtml(status || '-')}
+          </span>
+        </td>
+
+        <td>
+          <div class="siswa-action-buttons">
+            <button type="button"
+              class="btn-action btn-view"
+              onclick="viewSiswa('${id}')"
+              title="Lihat Detail">
+              <i class="fa-solid fa-eye"></i>
+            </button>
+
+            <button type="button"
+              class="btn-action btn-edit"
+              onclick="editSiswa('${id}')"
+              title="Edit">
+              <i class="fa-solid fa-pen"></i>
+            </button>
+
+            <button type="button"
+              class="btn-action btn-delete"
+              onclick="deleteSiswa('${id}')"
+              title="Hapus">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  updateSiswaPagination();
+}
+
+/* ============================================================
+   PAGINATION
+   ============================================================ */
+
+function updateSiswaPagination() {
+  const total = siswaFilteredData.length;
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(total / siswaPerPage)
+  );
+
+  if (siswaCurrentPage > totalPages) {
+    siswaCurrentPage = totalPages;
+  }
+
+  [
+    'siswaCurrentPage',
+    'currentSiswaPage',
+    'pageSiswaCurrent'
+  ].forEach(function (id) {
+    setValue(id, siswaCurrentPage);
+  });
+
+  [
+    'siswaTotalPages',
+    'totalSiswaPages',
+    'pageSiswaTotal'
+  ].forEach(function (id) {
+    setValue(id, totalPages);
+  });
+
+  [
+    'siswaTotalFiltered',
+    'totalSiswaFiltered',
+    'siswaShowingTotal'
+  ].forEach(function (id) {
+    setValue(id, total);
+  });
+}
+
+/* ============================================================
+   CHANGE PAGE
+   ============================================================ */
+
+function changeSiswaPage(direction) {
+  const totalPages = Math.max(
+    1,
+    Math.ceil(siswaFilteredData.length / siswaPerPage)
+  );
+
+  if (typeof direction === 'string') {
+    if (direction === 'next') {
+      siswaCurrentPage = Math.min(
+        siswaCurrentPage + 1,
+        totalPages
+      );
+    } else if (direction === 'prev') {
+      siswaCurrentPage = Math.max(
+        siswaCurrentPage - 1,
+        1
+      );
+    } else {
+      const page = parseInt(direction, 10);
+
+      if (!isNaN(page)) {
+        siswaCurrentPage = Math.min(
+          Math.max(page, 1),
+          totalPages
+        );
+      }
+    }
+  } else {
+    const value = Number(direction);
+
+    if (value > 0) {
+      siswaCurrentPage = Math.min(
+        siswaCurrentPage + 1,
+        totalPages
+      );
+    } else if (value < 0) {
+      siswaCurrentPage = Math.max(
+        siswaCurrentPage - 1,
+        1
+      );
+    }
+  }
+
+  renderSiswaTable();
+}
+
+/* ============================================================
+   TAMBAH SISWA
+   ============================================================ */
+
+function openTambahSiswa() {
+  siswaSelectedItem = null;
+
+  resetSiswaForm();
+
+  setValue(
+    'siswaModalTitle',
+    'Tambah Peserta PKL'
+  );
+
+  setValue(
+    'siswaFormTitle',
+    'Tambah Peserta PKL'
+  );
+
+  const form = document.getElementById('siswaForm');
+
+  if (form) {
+    form.dataset.mode = 'add';
+    delete form.dataset.id;
+  }
+
+  const idInput = document.getElementById('siswaId');
+
+  if (idInput) {
+    idInput.disabled = false;
+    idInput.readOnly = false;
+  }
+
+  const fotoInput = document.getElementById('siswaFoto');
+
+  if (fotoInput) {
+    fotoInput.value = '';
+  }
+
+  resetFotoPreview();
+  showModal('siswaFormModal');
+}
+
+/* ============================================================
+   EDIT SISWA
+   ============================================================ */
+
+function editSiswa(id) {
+  const item = findSiswaById(id);
+
+  console.log('[FOTO DEBUG] item:', item);
+  console.log('[FOTO DEBUG] item.foto:', item ? item.foto : null);
+  console.log(
+    '[FOTO DEBUG] preview:',
+    item ? getFotoPreviewSrc(item.foto) : null
+  );
+
+  if (!item) {
+    showSiswaToast(
+      'Data peserta PKL tidak ditemukan.',
+      'error'
+    );
+    return;
+  }
+
+  siswaSelectedItem = item;
+
+  fillSiswaForm(item);
+
+  setValue(
+    'siswaModalTitle',
+    'Edit Peserta PKL'
+  );
+
+  setValue(
+    'siswaFormTitle',
+    'Edit Peserta PKL'
+  );
+
+  const form = document.getElementById('siswaForm');
+
+  if (form) {
+    form.dataset.mode = 'edit';
+    form.dataset.id = item.id_pkl;
+  }
+
+  const idInput = document.getElementById('siswaId');
+
+  if (idInput) {
+    idInput.disabled = true;
+    idInput.readOnly = true;
+  }
+
+  showModal('siswaFormModal');
+}
+
+/* ============================================================
+   SUBMIT SISWA FORM
+   ============================================================ */
+
+function submitSiswaForm(event) {
+  if (event) {
+    event.preventDefault();
+  }
+
+  const form = document.getElementById('siswaForm');
+
+  const mode =
+    form && form.dataset.mode === 'edit'
+      ? 'edit'
+      : 'add';
+
+  const payload = collectSiswaFormData();
+
+  if (!payload.id_pkl) {
+    showSiswaToast('ID PKL wajib diisi.', 'error');
+    return false;
+  }
+
+  if (!/^PKL\d+$/i.test(payload.id_pkl)) {
+    showSiswaToast(
+      'Format ID PKL harus seperti PKL001.',
+      'error'
+    );
+    return false;
+  }
+
+  if (!payload.nama_siswa) {
+    showSiswaToast('Nama siswa wajib diisi.', 'error');
+    return false;
+  }
+
+  if (!payload.jurusan) {
+    showSiswaToast('Jurusan wajib diisi.', 'error');
+    return false;
+  }
+
+  if (!payload.password) {
+    showSiswaToast('Password wajib diisi.', 'error');
+    return false;
+  }
+
+  const fotoInput = document.getElementById('siswaFoto');
+  const file =
+    fotoInput &&
+    fotoInput.files &&
+    fotoInput.files[0]
+      ? fotoInput.files[0]
+      : null;
+
+  if (file) {
+    const allowed = [
+      'image/jpeg',
+      'image/jpg',
+      'image/png',
+      'image/webp'
+    ];
+
+    if (!allowed.includes(file.type)) {
+      showSiswaToast(
+        'Format foto tidak didukung.',
+        'error'
+      );
+      return false;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+      showSiswaToast(
+        'Ukuran foto maksimal 2 MB.',
+        'error'
+      );
+      return false;
+    }
+
+    setSiswaSubmitLoading(true);
+
+    uploadSelectedSiswaFoto(
+      file,
+      function (uploadResult) {
+        if (
+          !uploadResult ||
+          !uploadResult.success ||
+          !uploadResult.fileId
+        ) {
+          setSiswaSubmitLoading(false);
+
+          showSiswaToast(
+            uploadResult && uploadResult.message
+              ? uploadResult.message
+              : 'Foto gagal diupload.',
+            'error'
+          );
+
+          return;
+        }
+
+        payload.foto = uploadResult.fileId;
+
+        saveSiswaPayload(
+          mode,
+          payload
+        );
+      }
+    );
+  } else {
+    if (
+      mode === 'edit' &&
+      siswaSelectedItem
+    ) {
+      payload.foto =
+        siswaSelectedItem.foto || '';
+    } else {
+      payload.foto = '';
+    }
+
+    setSiswaSubmitLoading(true);
+
+    saveSiswaPayload(
+      mode,
+      payload
+    );
+  }
+
+  return false;
+}
+
+/* ============================================================
+   SAVE SISWA PAYLOAD
+   ============================================================ */
+
+function saveSiswaPayload(mode, payload) {
+  const method =
+    mode === 'edit'
+      ? 'updateSiswa'
+      : 'addSiswa';
+
+  const runner =
+    google.script.run
+      .withSuccessHandler(function (result) {
+        setSiswaSubmitLoading(false);
+
+        if (result && result.success) {
+          showSiswaToast(
+            result.message ||
+              (
+                mode === 'edit'
+                  ? 'Data peserta PKL berhasil diperbarui.'
+                  : 'Peserta PKL berhasil ditambahkan.'
+              ),
+            'success'
+          );
+
+          closeSiswaForm();
+          loadSiswaData();
+        } else {
+          showSiswaToast(
+            result && result.message
+              ? result.message
+              : 'Data peserta PKL gagal disimpan.',
+            'error'
+          );
+        }
+      })
+      .withFailureHandler(function (error) {
+        setSiswaSubmitLoading(false);
+
+        console.error(
+          '[SISWA] ' + method + ' error:',
+          error
+        );
+
+        showSiswaToast(
+          error && error.message
+            ? error.message
+            : 'Data peserta PKL gagal disimpan.',
+          'error'
+        );
+      });
+
+  runner[method](payload);
+}
+
+/* ============================================================
+   UPLOAD SELECTED SISWA FOTO
+   ============================================================ */
+
+function uploadSelectedSiswaFoto(file, callback) {
+  if (!file) {
+    callback({
+      success: false,
+      message: 'File foto tidak ditemukan.'
+    });
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = function (event) {
+    google.script.run
+      .withSuccessHandler(function (result) {
+        console.log(
+          '[SISWA FOTO] upload result:',
+          result
+        );
+
+        callback(result);
+      })
+      .withFailureHandler(function (error) {
+        console.error(
+          '[SISWA FOTO] upload error:',
+          error
+        );
+
+        callback({
+          success: false,
+          message:
+            error && error.message
+              ? error.message
+              : 'Foto gagal diupload.'
+        });
+      })
+      .uploadSiswaFoto({
+        base64: event.target.result,
+        namaFile: createSiswaFotoFileName(file),
+        mimeType: file.type
+      });
+  };
+
+  reader.onerror = function () {
+    callback({
+      success: false,
+      message: 'Foto gagal dibaca.'
+    });
+  };
+
+  reader.readAsDataURL(file);
+}
+
+/* ============================================================
+   CREATE FOTO FILE NAME
+   ============================================================ */
+
+function createSiswaFotoFileName(file) {
+  const id =
+    getInputValue('siswaId')
+      .replace(/[^a-zA-Z0-9_-]/g, '_') ||
+    'SISWA';
+
+  const extension =
+    getFileExtension(
+      file && file.name
+        ? file.name
+        : '',
+      file && file.type
+        ? file.type
+        : 'image/jpeg'
+    );
+
+  return (
+    'FOTO_' +
+    id +
+    '_' +
+    new Date().getTime() +
+    extension
+  );
+}
+
+/* ============================================================
+   GET FILE EXTENSION
+   ============================================================ */
+
+function getFileExtension(fileName, mimeType) {
+  const lower = String(fileName || '').toLowerCase();
+
+  if (lower.endsWith('.jpeg')) return '.jpeg';
+  if (lower.endsWith('.jpg')) return '.jpg';
+  if (lower.endsWith('.png')) return '.png';
+  if (lower.endsWith('.webp')) return '.webp';
+
+  if (mimeType === 'image/png') return '.png';
+  if (mimeType === 'image/webp') return '.webp';
+
+  return '.jpg';
+}
+
+/* ============================================================
+   SISWA SUBMIT LOADING
+   ============================================================ */
+
+function setSiswaSubmitLoading(loading) {
+  const buttons = [
+    document.getElementById('siswaSubmitButton'),
+    document.getElementById('btnSiswaSubmit'),
+    document.querySelector(
+      '#siswaForm button[type="submit"]'
+    )
+  ].filter(Boolean);
+
+  buttons.forEach(function (button) {
+    button.disabled = loading;
+
+    const icon = button.querySelector('i');
+    const text = button.querySelector(
+      '[data-submit-text]'
+    );
+
+    if (loading) {
+      if (text) {
+        text.textContent = 'Menyimpan...';
+      }
+
+      if (icon) {
+        icon.className =
+          'fa-solid fa-spinner fa-spin';
+      }
+    } else {
+      if (text) {
+        text.textContent = 'Simpan';
+      }
+
+      if (icon) {
+        icon.className =
+          'fa-solid fa-floppy-disk';
+      }
+    }
+  });
+}
+
+/* ============================================================
+   VIEW SISWA
+   ============================================================ */
+
+function viewSiswa(id) {
+  const item = findSiswaById(id);
+
+  if (!item) {
+    showSiswaToast(
+      'Data peserta PKL tidak ditemukan.',
+      'error'
+    );
+    return;
+  }
+
+  siswaSelectedItem = item;
+
+  setValue('detailId', item.id_pkl || '-');
+  setValue('detailNama', item.nama_siswa || '-');
+  setValue('detailIdPkl', item.id_pkl || '-');
+  setValue('detailSekolah', item.asal_sekolah || '-');
+  setValue('detailJurusan', item.jurusan || '-');
+  setValue('detailGender', item.jenis_kelamin || '-');
+  setValue('detailKelas', item.kelas || '-');
+  setValue('detailDivisi', item.divisi || '-');
+  setValue('detailBagian', item.bagian || '-');
+  setValue('detailStatus', item.status || '-');
+  setValue('detailEmail', item.email || '-');
+  setValue('detailDateJoin', item.date_join || '-');
+  setValue('detailDateCreate', item.date_create || '-');
+  setValue('detailTimestamp', item.timestamp || '-');
+
+  const detailPhoto =
+    document.getElementById('detailFoto');
+
+  const detailPhotoIcon =
+    document.getElementById('detailFotoIcon');
+
+  if (detailPhoto) {
+    const foto =
+      getFotoPreviewSrc(item.foto);
+
+    console.log(
+      '[FOTO VIEW] nilai asli:',
+      item.foto
+    );
+
+    console.log(
+      '[FOTO VIEW] URL preview:',
+      foto
+    );
+
+    detailPhoto.onload = function () {
+      this.style.display = 'block';
+
+      if (detailPhotoIcon) {
+        detailPhotoIcon.style.display = 'none';
+      }
+    };
+
+    detailPhoto.onerror = function () {
+      console.error(
+        '[FOTO VIEW] Gagal memuat foto:',
+        this.src
+      );
+
+      this.style.display = 'none';
+
+      if (detailPhotoIcon) {
+        detailPhotoIcon.style.display = 'block';
+      }
+    };
+
+    if (foto) {
+      detailPhoto.src = foto;
+      detailPhoto.style.display = 'block';
+
+      if (detailPhotoIcon) {
+        detailPhotoIcon.style.display = 'none';
+      }
+    } else {
+      detailPhoto.removeAttribute('src');
+      detailPhoto.style.display = 'none';
+
+      if (detailPhotoIcon) {
+        detailPhotoIcon.style.display = 'block';
+      }
+    }
+  }
+
+  showModal('siswaDetailModal');
+}
+
+/* ============================================================
+   EDIT FROM DETAIL
+   ============================================================ */
+
+function editFromDetail() {
+  if (!siswaSelectedItem) return;
+
+  const id = siswaSelectedItem.id_pkl;
+
+  closeSiswaDetail();
+  editSiswa(id);
+}
+
+/* ============================================================
+   DELETE SISWA
+   ============================================================ */
+
+function deleteSiswa(id) {
+  const item = findSiswaById(id);
+
+  if (!item) {
+    showSiswaToast(
+      'Data peserta PKL tidak ditemukan.',
+      'error'
+    );
+    return;
+  }
+
+  siswaDeleteItem = item;
+
+  setValue(
+    'deleteSiswaName',
+    item.nama_siswa || '-'
+  );
+
+  setValue(
+    'deleteSiswaId',
+    item.id_pkl || '-'
+  );
+
+  showModal('deleteSiswaModal');
+}
+
+/* ============================================================
+   CONFIRM DELETE
+   ============================================================ */
+
+function confirmDeleteSiswa() {
+  if (!siswaDeleteItem) return;
+
+  const id = siswaDeleteItem.id_pkl;
+
+  google.script.run
+    .withSuccessHandler(function (result) {
+      if (result && result.success) {
+        showSiswaToast(
+          result.message ||
+            'Peserta PKL berhasil dihapus.',
+          'success'
+        );
+
+        closeDeleteModal();
+        siswaDeleteItem = null;
+        loadSiswaData();
+      } else {
+        showSiswaToast(
+          result && result.message
+            ? result.message
+            : 'Gagal menghapus peserta PKL.',
+          'error'
+        );
+      }
+    })
+    .withFailureHandler(function (error) {
+      console.error(
+        '[SISWA] delete error:',
+        error
+      );
+
+      showSiswaToast(
+        error && error.message
+          ? error.message
+          : 'Gagal menghapus peserta PKL.',
+        'error'
+      );
+    })
+    .deleteSiswa(id);
+}
+
+/* ============================================================
+   REFRESH SISWA
+   ============================================================ */
+
+function refreshSiswaData() {
+  loadSiswaData();
+}
+
+/* ============================================================
+   CLOSE SISWA FORM
+   ============================================================ */
+
+function closeSiswaForm() {
+  hideModal('siswaFormModal');
+  siswaSelectedItem = null;
+}
+
+/* ============================================================
+   CLOSE DETAIL
+   ============================================================ */
+
+function closeSiswaDetail() {
+  hideModal('siswaDetailModal');
+}
+
+/* ============================================================
+   CLOSE DELETE
+   ============================================================ */
+
+function closeDeleteModal() {
+  hideModal('deleteSiswaModal');
+  siswaDeleteItem = null;
+}
+
+/* ============================================================
+   RESET SISWA FORM
+   ============================================================ */
+
+function resetSiswaForm() {
+  const form = document.getElementById('siswaForm');
+
+  if (form) {
+    form.reset();
+    delete form.dataset.mode;
+    delete form.dataset.id;
+  }
+
+  const idInput = document.getElementById('siswaId');
+
+  if (idInput) {
+    idInput.disabled = false;
+    idInput.readOnly = false;
+  }
+
+  const fotoInput = document.getElementById('siswaFoto');
+
+  if (fotoInput) {
+    fotoInput.value = '';
+  }
+
+  resetFotoPreview();
+}
+
+/* ============================================================
+   FILL SISWA FORM
+   ============================================================ */
+
+function fillSiswaForm(item) {
+  setInputValue('siswaId', item.id_pkl);
+  setInputValue('siswaNama', item.nama_siswa);
+  setInputValue('siswaSekolahInput', item.asal_sekolah);
+  setInputValue('siswaJurusan', item.jurusan);
+  setInputValue('siswaGender', item.jenis_kelamin);
+  setInputValue('siswaKelas', item.kelas);
+  setInputValue('siswaDivisi', item.divisi);
+  setInputValue('siswaBagian', item.bagian);
+  setInputValue('siswaEmail', item.email);
+  setInputValue('siswaPassword', item.password);
+  setInputValue(
+    'siswaDateJoin',
+    normalizeDateForInput(item.date_join)
+  );
+  setInputValue('siswaStatus', item.status);
+
+  const fotoInput =
+    document.getElementById('siswaFoto');
+
+  if (fotoInput) {
+    fotoInput.value = '';
+  }
+
+  updateFotoPreview(item.foto || '');
+}
+
+/* ============================================================
+   COLLECT FORM DATA
+   ============================================================ */
+
+function collectSiswaFormData() {
+  return {
+    id_pkl: getInputValue('siswaId'),
+    nama_siswa: getInputValue('siswaNama'),
+    asal_sekolah: getInputValue('siswaSekolahInput'),
+    jurusan: getInputValue('siswaJurusan'),
+    jenis_kelamin: getInputValue('siswaGender'),
+    kelas: getInputValue('siswaKelas'),
+    divisi: getInputValue('siswaDivisi'),
+    bagian: getInputValue('siswaBagian'),
+    password: getInputValue('siswaPassword'),
+    date_join: getInputValue('siswaDateJoin'),
+    foto: '',
+    status: getInputValue('siswaStatus'),
+    email: getInputValue('siswaEmail')
+  };
+}
+
+/* ============================================================
+   FOTO PREVIEW
+   ============================================================ */
+
+function updateFotoPreview(value) {
+  const preview =
+    document.getElementById('siswaFotoPreviewImg');
+
+  const icon =
+    document.getElementById('siswaFotoPreviewIcon');
+
+  if (!preview) {
+    console.warn(
+      '[FOTO] siswaFotoPreviewImg tidak ditemukan.'
+    );
+    return;
+  }
+
+  const src = getFotoPreviewSrc(value);
+
+  if (src) {
+    preview.onload = function () {
+      preview.style.display = 'block';
+
+      if (icon) {
+        icon.style.display = 'none';
+      }
+    };
+
+    preview.onerror = function () {
+      console.error(
+        '[FOTO] Preview gagal dimuat:',
+        preview.src
+      );
+
+      preview.style.display = 'none';
+
+      if (icon) {
+        icon.style.display = 'block';
+      }
+    };
+
+    preview.src = src;
+    preview.style.display = 'block';
+
+    if (icon) {
+      icon.style.display = 'none';
+    }
+  } else {
+    preview.removeAttribute('src');
+    preview.style.display = 'none';
+
+    if (icon) {
+      icon.style.display = 'block';
+    }
+  }
+}
+
+/* ============================================================
+   RESET FOTO
+   ============================================================ */
+
+function resetFotoPreview() {
+  const preview =
+    document.getElementById('siswaFotoPreviewImg');
+
+  const icon =
+    document.getElementById('siswaFotoPreviewIcon');
+
+  if (preview) {
+    preview.removeAttribute('src');
+    preview.style.display = 'none';
+  }
+
+  if (icon) {
+    icon.style.display = 'block';
+  }
+}
+
+/* ============================================================
+   GET FOTO SOURCE
+   ============================================================ */
+
+function getFotoPreviewSrc(value) {
+  if (!value) return '';
+
+  const foto = String(value).trim();
+
+  if (!foto) return '';
+
+  if (foto.startsWith('data:image/')) {
+    return foto;
+  }
+
+  let fileId = '';
+
+  let match = foto.match(
+    /drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/
+  );
+
+  if (match) {
+    fileId = match[1];
+  }
+
+  if (!fileId) {
+    match = foto.match(
+      /drive\.google\.com\/uc\?(?:[^#]*&)?id=([a-zA-Z0-9_-]+)/
+    );
+
+    if (match) {
+      fileId = match[1];
+    }
+  }
+
+  if (!fileId) {
+    match = foto.match(
+      /drive\.google\.com\/open\?id=([a-zA-Z0-9_-]+)/
+    );
+
+    if (match) {
+      fileId = match[1];
+    }
+  }
+
+  if (
+    !fileId &&
+    /^[a-zA-Z0-9_-]{20,}$/.test(foto)
+  ) {
+    fileId = foto;
+  }
+
+  if (fileId) {
+    return (
+      'https://drive.google.com/thumbnail?id=' +
+      encodeURIComponent(fileId) +
+      '&sz=w1000'
+    );
+  }
+
+  if (
+    foto.startsWith('http://') ||
+    foto.startsWith('https://')
+  ) {
+    return foto;
+  }
+
+  return '';
+}
+
+/* ============================================================
+   FIND SISWA
+   ============================================================ */
+
+function findSiswaById(id) {
+  const target = String(id || '').trim();
+
+  return siswaData.find(function (item) {
+    return String(item.id_pkl || '').trim() === target;
+  }) || null;
+}
+
+/* ============================================================
+   SISWA LOAD ERROR
+   ============================================================ */
+
+function showSiswaLoadError(message) {
+  const tbody = document.getElementById('siswaTableBody');
+
+  if (tbody) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="20" style="
+          padding:40px;
+          text-align:center;
+          color:#dc2626;
+        ">
+          <i class="fa-solid fa-circle-exclamation" style="
+            font-size:28px;
+            margin-bottom:10px;
+          "></i>
+          <br>
+          <strong>Peserta PKL gagal dimuat.</strong>
+          <br>
+          <small style="
+            color:#6b7280;
+            display:block;
+            margin-top:8px;
+          ">
+            ${escapeHtml(
+              message ||
+              'Terjadi kesalahan JavaScript.'
+            )}
+          </small>
+        </td>
+      </tr>
+    `;
+
+    return;
+  }
+
+  const content =
+    document.getElementById('dashboardContent');
+
+  if (content) {
+    content.innerHTML = `
+      <div class="page-error">
+        <div class="page-error-inner">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <div>Peserta PKL gagal dimuat.</div>
+          <small style="
+            color:#6b7280;
+            display:block;
+            margin-top:8px;
+          ">
+            ${escapeHtml(
+              message ||
+              'Terjadi kesalahan.'
+            )}
+          </small>
+        </div>
+      </div>
+    `;
+  }
+}
+
+/* ============================================================
+   SISWA TOAST
+   ============================================================ */
+
+function showSiswaToast(message, type) {
+  let toast =
+    document.getElementById('siswaToast');
+
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'siswaToast';
+
+    toast.style.position = 'fixed';
+    toast.style.right = '24px';
+    toast.style.bottom = '24px';
+    toast.style.zIndex = '99999';
+    toast.style.padding = '13px 18px';
+    toast.style.borderRadius = '10px';
+    toast.style.background = '#111827';
+    toast.style.color = '#ffffff';
+    toast.style.fontSize = '13px';
+    toast.style.boxShadow =
+      '0 10px 30px rgba(0,0,0,.18)';
+
+    document.body.appendChild(toast);
+  }
+
+  toast.textContent = message || '';
+
+  toast.style.background =
+    type === 'error'
+      ? '#dc2626'
+      : '#16a34a';
+
+  toast.style.display = 'block';
+
+  clearTimeout(toast._timer);
+
+  toast._timer = setTimeout(function () {
+    toast.style.display = 'none';
+  }, 3000);
+}
+
+/* ============================================================
+   MODAL HELPERS
+   ============================================================ */
+
+function showModal(id) {
+  const modal = document.getElementById(id);
+
+  if (!modal) {
+    console.warn('[MODAL] Tidak ditemukan:', id);
+    return;
+  }
+
+  modal.style.display = 'flex';
+}
+
+function hideModal(id) {
+  const modal = document.getElementById(id);
+
+  if (!modal) return;
+
+  modal.style.display = 'none';
+}
+
+/* ============================================================
+   GENERIC GET VALUE
+   ============================================================ */
+
+function getValue(id, value) {
+  const element = document.getElementById(id);
+
+  if (!element) return;
+
+  element.textContent =
+    value === undefined ||
+    value === null
+      ? '-'
+      : value;
+}
+
+/* ============================================================
+   GET INPUT VALUE
+   ============================================================ */
+
+function getInputValue(id) {
+  const element = document.getElementById(id);
+
+  if (!element) return '';
+
+  return String(element.value || '').trim();
+}
+
+/* ============================================================
+   SET INPUT VALUE
+   ============================================================ */
+
+function setInputValue(id, value) {
+  const element = document.getElementById(id);
+
+  if (!element) return;
+
+  element.value =
+    value === undefined ||
+    value === null
+      ? ''
+      : value;
+}
+
+/* ============================================================
+   INITIALS
+   ============================================================ */
+
+function getInitials(name) {
+  const text = String(name || '').trim();
+
+  if (!text) return '?';
+
+  const parts = text.split(/\s+/);
+
+  if (parts.length === 1) {
+    return parts[0]
+      .substring(0, 2)
+      .toUpperCase();
+  }
+
+  return (
+    parts[0].charAt(0) +
+    parts[1].charAt(0)
+  ).toUpperCase();
+}
+
+/* ============================================================
+   NORMALIZE DATE
+   ============================================================ */
+
+function normalizeDateForInput(value) {
+  if (!value) return '';
+
+  const text = String(value).trim();
+
+  if (/^\d{4}-\d{2}-\d{2}$/.test(text)) {
+    return text;
+  }
+
+  const match = text.match(
+    /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/
+  );
+
+  if (match) {
+    const day = match[1].padStart(2, '0');
+    const month = match[2].padStart(2, '0');
+    const year = match[3];
+
+    return (
+      year +
+      '-' +
+      month +
+      '-' +
+      day
+    );
+  }
+
+  return '';
+}
+
+/* ============================================================
+   OPEN ABSENSI
+   ============================================================ */
+
+function openAbsensiPage() {
+  setActiveMenu('menuAbsensi');
+
+  const content =
+    document.getElementById('dashboardContent');
+
+  if (!content) {
+    console.error('[ABSENSI] dashboardContent tidak ditemukan.');
+    return;
+  }
+
+  const title =
+    document.getElementById('pageTitle');
+
+  const subtitle =
+    document.getElementById('pageSubtitle');
+
+  if (title) {
+    title.textContent = 'Absensi';
+  }
+
+  if (subtitle) {
+    subtitle.textContent =
+      'Data absensi peserta PKL';
+  }
+
+  content.innerHTML = `
+    <div class="page-loading">
+      <div class="page-loading-inner">
+        <i class="fa-solid fa-spinner spin"></i>
+        <div>Memuat halaman Absensi...</div>
+      </div>
+    </div>
+  `;
+
+  google.script.run
+    .withSuccessHandler(function (html) {
+      console.log('[ABSENSI] HTML berhasil diterima');
+
+      if (!html) {
+        content.innerHTML = `
+          <div class="page-error">
+            <div class="page-error-inner">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <div>Halaman Absensi kosong.</div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      const temp = document.createElement('div');
+      temp.innerHTML = html;
+
+      temp.querySelectorAll('script').forEach(function (script) {
+        script.remove();
+      });
+
+      content.innerHTML = temp.innerHTML;
+
+      console.log('[ABSENSI] Fragment berhasil dimasukkan.');
+
+      try {
+        if (typeof initializeAbsensi === 'function') {
+          initializeAbsensi();
+        } else if (
+          typeof window.__satuGarisInitializeAbsensi === 'function'
+        ) {
+          window.__satuGarisInitializeAbsensi();
+        }
+      } catch (error) {
+        console.error(
+          '[ABSENSI] initializeAbsensi error:',
+          error
+        );
+      }
+    })
+    .withFailureHandler(function (error) {
+      console.error(
+        '[ABSENSI] include error:',
+        error
+      );
+
+      content.innerHTML = `
+        <div class="page-error">
+          <div class="page-error-inner">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <div>Gagal memuat halaman Absensi.</div>
+
+            <small style="
+              display:block;
+              margin-top:8px;
+              color:#6b7280;
+            ">
+              ${escapeHtml(
+                error && error.message
+                  ? error.message
+                  : 'Terjadi kesalahan pada server.'
+              )}
+            </small>
+          </div>
+        </div>
+      `;
+    })
+    .include('absensi');
+}
+
+
+/* ============================================================
+   ABSENSI STATE
+   ============================================================ */
+
+let absensiData = [];
+let absensiFilteredData = [];
+let absensiCurrentPage = 1;
+let absensiPerPage = 10;
+
+let absensiSelectedItem = null;
+let absensiDetailData = [];
+let absensiDetailId = '';
+let absensiDetailCurrentDate = new Date();
+
+let absensiInitialized = false;
+let absensiEventsAttached = false;
+
+
+/* ============================================================
+   INITIALIZE ABSENSI
+   ============================================================ */
+
+function initializeAbsensi() {
+  console.log('[ABSENSI] initializeAbsensi()');
+
+  absensiInitialized = true;
+  absensiEventsAttached = false;
+
+  absensiCurrentPage = 1;
+  absensiSelectedItem = null;
+  absensiDetailData = [];
+  absensiDetailId = '';
+
+  attachAbsensiEvents();
+  loadAbsensiData();
+}
+
+
+/* ============================================================
+   ATTACH ABSENSI EVENTS
+   ============================================================ */
+
+function attachAbsensiEvents() {
+  if (absensiEventsAttached) return;
+
+  const searchInput =
+    document.getElementById('absensiSearch');
+
+  if (searchInput) {
+    searchInput.oninput = function () {
+      filterAbsensiTable();
+    };
+  }
+
+  const refreshButton =
+    document.getElementById('refreshAbsensiButton');
+
+  if (refreshButton) {
+    refreshButton.onclick = function () {
+      refreshAbsensiData();
+    };
+  }
+
+  document
+    .querySelectorAll('[data-absensi-close]')
+    .forEach(function (button) {
+      button.onclick = function () {
+        const target =
+          this.getAttribute('data-absensi-close');
+
+        if (target) {
+          closeAbsensiModal(target);
+        }
+      };
+    });
+
+  absensiEventsAttached = true;
+}
+
+
+/* ============================================================
+   LOAD ABSENSI DATA
+   ============================================================ */
+
+function loadAbsensiData() {
+  console.log('[ABSENSI] Memanggil getAbsensiRekap()...');
+
+  const tbody =
+    document.getElementById('absensiTableBody');
+
+  if (tbody) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" style="
+          padding:45px;
+          text-align:center;
+          color:#6b7280;
+        ">
+          <i class="fa-solid fa-spinner fa-spin" style="
+            font-size:25px;
+            margin-bottom:10px;
+          "></i>
+          <br>
+          Memuat data absensi...
+        </td>
+      </tr>
+    `;
+  }
+
+  google.script.run
+    .withSuccessHandler(function (result) {
+      console.log('[ABSENSI] Rekap:', result);
+
+      if (!result || !result.success) {
+        absensiData = [];
+        absensiFilteredData = [];
+
+        showAbsensiLoadError(
+          result && result.message
+            ? result.message
+            : 'Data absensi gagal diambil.'
+        );
+
+        return;
+      }
+
+      absensiData =
+        Array.isArray(result.data)
+          ? result.data.map(normalizeAbsensiRekap)
+          : [];
+
+      absensiFilteredData =
+        absensiData.slice();
+
+      absensiCurrentPage = 1;
+
+      renderAbsensiTable();
+
+      console.log(
+        '[ABSENSI] Total siswa:',
+        absensiData.length
+      );
+    })
+    .withFailureHandler(function (error) {
+      console.error(
+        '[ABSENSI] getAbsensiRekap error:',
+        error
+      );
+
+      absensiData = [];
+      absensiFilteredData = [];
+
+      showAbsensiLoadError(
+        error && error.message
+          ? error.message
+          : 'Gagal mengambil data absensi.'
+      );
+    })
+    .getAbsensiRekap();
+}
+
+
+/* ============================================================
+   NORMALIZE ABSENSI REKAP
+   ============================================================ */
+
+function normalizeAbsensiRekap(item) {
+  item = item || {};
+
+  return {
+    id_pkl: String(
+      item.id_pkl ||
+      item.idPkl ||
+      ''
+    ).trim(),
+
+    nama_siswa: String(
+      item.nama_siswa ||
+      item.nama ||
+      ''
+    ).trim(),
+
+    divisi: String(
+      item.divisi ||
+      ''
+    ).trim(),
+
+    bagian: String(
+      item.bagian ||
+      ''
+    ).trim(),
+
+    hadir: Number(
+      item.jumlah_hadir ??
+      item.hadir ??
+      item.jumlahHadir ??
+      0
+    ),
+
+    tidak_hadir: Number(
+      item.jumlah_tidak_hadir ??
+      item.tidak_hadir ??
+      item.tidakHadir ??
+      0
+    ),
+
+    terlambat: Number(
+      item.jumlah_terlambat ??
+      item.terlambat ??
+      item.jumlahTerlambat ??
+      0
+    )
+  };
+}
+
+
+/* ============================================================
+   FILTER ABSENSI
+   ============================================================ */
+
+function filterAbsensiTable() {
+  const search =
+    getInputValue('absensiSearch')
+      .toLowerCase();
+
+  absensiFilteredData =
+    absensiData.filter(function (item) {
+      const searchable = [
+        item.id_pkl,
+        item.nama_siswa,
+        item.divisi,
+        item.bagian
+      ]
+        .join(' ')
+        .toLowerCase();
+
+      return !search ||
+        searchable.includes(search);
+    });
+
+  absensiCurrentPage = 1;
+
+  renderAbsensiTable();
+}
+
+
+/* ============================================================
+   RENDER ABSENSI TABLE
+   ============================================================ */
+
+function renderAbsensiTable() {
+  const tbody =
+    document.getElementById('absensiTableBody');
+
+  if (!tbody) {
+    console.warn(
+      '[ABSENSI] absensiTableBody tidak ditemukan.'
+    );
+    return;
+  }
+
+  const total =
+    absensiFilteredData.length;
+
+  if (total === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" style="
+          padding:45px;
+          text-align:center;
+          color:#6b7280;
+        ">
+          <i class="fa-solid fa-calendar-xmark" style="
+            font-size:30px;
+            margin-bottom:12px;
+          "></i>
+
+          <div>
+            Data absensi tidak ditemukan.
+          </div>
+        </td>
+      </tr>
+    `;
+
+    updateAbsensiPagination();
+    return;
+  }
+
+  const start =
+    (absensiCurrentPage - 1) *
+    absensiPerPage;
+
+  const end =
+    Math.min(
+      start + absensiPerPage,
+      total
+    );
+
+  const pageData =
+    absensiFilteredData.slice(
+      start,
+      end
+    );
+
+  tbody.innerHTML =
+    pageData.map(function (item) {
+      const id =
+        escapeJs(item.id_pkl);
+
+      return `
+        <tr>
+
+          <!-- ID PKL -->
+          <td>
+            <strong>
+              ${escapeHtml(
+                item.id_pkl || '-'
+              )}
+            </strong>
+          </td>
+
+          <!-- NAMA -->
+          <td>
+            ${escapeHtml(
+              item.nama_siswa || '-'
+            )}
+          </td>
+
+          <!-- DIVISI -->
+          <td>
+            ${escapeHtml(
+              item.divisi || '-'
+            )}
+          </td>
+
+          <!-- BAGIAN -->
+          <td>
+            ${escapeHtml(
+              item.bagian || '-'
+            )}
+          </td>
+
+          <!-- HADIR -->
+          <td>
+            <span class="absensi-count-badge hadir">
+              ${item.hadir}
+            </span>
+          </td>
+
+          <!-- TIDAK HADIR -->
+          <td>
+            <span class="absensi-count-badge tidak-hadir">
+              ${item.tidak_hadir}
+            </span>
+          </td>
+
+          <!-- TERLAMBAT -->
+          <td>
+            <span class="absensi-count-badge terlambat">
+              ${item.terlambat}
+            </span>
+          </td>
+
+          <!-- AKSI -->
+          <td>
+            <div class="absensi-action-buttons">
+
+              <button
+                type="button"
+                class="btn-action btn-view"
+                onclick="openAbsensiDetail('${id}')"
+                title="Detail Absensi">
+
+                <i class="fa-solid fa-eye"></i>
+
+              </button>
+
+              <button
+                type="button"
+                class="btn-action btn-delete"
+                onclick="deleteAbsensi('${id}')"
+                title="Hapus Data Absensi">
+
+                <i class="fa-solid fa-trash"></i>
+
+              </button>
+
+            </div>
+          </td>
+
+        </tr>
+      `;
+    }).join('');
+
+  updateAbsensiPagination();
+}
+
+
+/* ============================================================
+   PAGINATION ABSENSI
+   ============================================================ */
+
+function updateAbsensiPagination() {
+  const total =
+    absensiFilteredData.length;
+
+  const totalPages =
+    Math.max(
+      1,
+      Math.ceil(
+        total / absensiPerPage
+      )
+    );
+
+  if (
+    absensiCurrentPage >
+    totalPages
+  ) {
+    absensiCurrentPage =
+      totalPages;
+  }
+
+  [
+    'absensiCurrentPage',
+    'currentAbsensiPage',
+    'pageAbsensiCurrent'
+  ].forEach(function (id) {
+    setValue(
+      id,
+      absensiCurrentPage
+    );
+  });
+
+  [
+    'absensiTotalPages',
+    'totalAbsensiPages',
+    'pageAbsensiTotal'
+  ].forEach(function (id) {
+    setValue(
+      id,
+      totalPages
+    );
+  });
+
+  [
+    'absensiTotalFiltered',
+    'totalAbsensiFiltered',
+    'absensiShowingTotal'
+  ].forEach(function (id) {
+    setValue(
+      id,
+      total
+    );
+  });
+
+  const info =
+    document.getElementById(
+      'absensiPaginationInfo'
+    );
+
+  if (info) {
+    if (total === 0) {
+      info.textContent =
+        'Tidak ada data';
+    } else {
+      const start =
+        (
+          (absensiCurrentPage - 1) *
+          absensiPerPage
+        ) + 1;
+
+      const end =
+        Math.min(
+          absensiCurrentPage *
+            absensiPerPage,
+          total
+        );
+
+      info.textContent =
+        `Menampilkan ${start}–${end} dari ${total} data`;
+    }
+  }
+
+  const prev =
+    document.getElementById(
+      'absensiPrevButton'
+    );
+
+  const next =
+    document.getElementById(
+      'absensiNextButton'
+    );
+
+  if (prev) {
+    prev.disabled =
+      absensiCurrentPage <= 1;
+  }
+
+  if (next) {
+    next.disabled =
+      absensiCurrentPage >=
+      totalPages;
+  }
+}
+
+
+/* ============================================================
+   CHANGE ABSENSI PAGE
+   ============================================================ */
+
+function changeAbsensiPage(direction) {
+  const totalPages =
+    Math.max(
+      1,
+      Math.ceil(
+        absensiFilteredData.length /
+        absensiPerPage
+      )
+    );
+
+  if (
+    typeof direction === 'string'
+  ) {
+
+    if (
+      direction === 'next'
+    ) {
+      absensiCurrentPage =
+        Math.min(
+          absensiCurrentPage + 1,
+          totalPages
+        );
+
+    } else if (
+      direction === 'prev'
+    ) {
+      absensiCurrentPage =
+        Math.max(
+          absensiCurrentPage - 1,
+          1
+        );
+
+    } else {
+
+      const page =
+        parseInt(
+          direction,
+          10
+        );
+
+      if (!isNaN(page)) {
+        absensiCurrentPage =
+          Math.min(
+            Math.max(page, 1),
+            totalPages
+          );
+      }
+    }
+
+  } else {
+
+    const value =
+      Number(direction);
+
+    if (value > 0) {
+      absensiCurrentPage =
+        Math.min(
+          absensiCurrentPage + 1,
+          totalPages
+        );
+
+    } else if (value < 0) {
+      absensiCurrentPage =
+        Math.max(
+          absensiCurrentPage - 1,
+          1
+        );
+    }
+  }
+
+  renderAbsensiTable();
+}
+
+
+/* ============================================================
+   REFRESH ABSENSI
+   ============================================================ */
+
+function refreshAbsensiData() {
+  loadAbsensiData();
+}
+
+
+/* ============================================================
+   OPEN DETAIL ABSENSI
+   ============================================================ */
+
+function openAbsensiDetail(id) {
+  console.log('[ABSENSI DETAIL] Membuka:', id);
+
+  const item = absensiData.find(function (data) {
+    return String(data.id_pkl || '').trim() ===
+           String(id || '').trim();
+  });
+
+  if (!item) {
+    console.error('[ABSENSI DETAIL] Data tidak ditemukan:', id);
+
+    showAbsensiToast(
+      'Data siswa tidak ditemukan.',
+      'error'
+    );
+
+    return;
+  }
+
+  // Simpan siswa yang dipilih
+  absensiSelectedItem = item;
+  absensiDetailId = item.id_pkl;
+  absensiDetailCurrentDate = new Date();
+
+  // ==========================================================
+  // PINDAH DARI LIST → DETAIL
+  // ==========================================================
+
+  const listPage =
+    document.getElementById('absensiListPage');
+
+  const detailPage =
+    document.getElementById('absensiDetailPage');
+
+  if (!listPage || !detailPage) {
+    console.error(
+      '[ABSENSI DETAIL] absensiListPage / absensiDetailPage tidak ditemukan.'
+    );
+
+    showAbsensiToast(
+      'Halaman detail absensi tidak ditemukan.',
+      'error'
+    );
+
+    return;
+  }
+
+  listPage.style.display = 'none';
+  detailPage.style.display = 'block';
+
+  // ==========================================================
+  // INFORMASI SISWA
+  // ==========================================================
+
+  const nama =
+    document.getElementById('detailNamaSiswa');
+
+  const info =
+    document.getElementById('detailInfoSiswa');
+
+  if (nama) {
+    nama.textContent =
+      item.nama_siswa || '-';
+  }
+
+  if (info) {
+    info.textContent = [
+      item.id_pkl,
+      item.divisi,
+      item.bagian
+    ]
+      .filter(Boolean)
+      .join(' • ');
+  }
+
+  // ==========================================================
+  // RESET DATA DETAIL
+  // ==========================================================
+
+  absensiDetailData = [];
+
+  const calendar =
+    document.getElementById('calendarGrid');
+
+  if (calendar) {
+    calendar.innerHTML = `
+      <div style="
+        grid-column: 1 / -1;
+        padding: 45px 20px;
+        text-align: center;
+        color: #64748b;
+      ">
+        <i
+          class="fa-solid fa-spinner fa-spin"
+          style="font-size:24px;"
+        ></i>
+
+        <div style="margin-top:10px;">
+          Memuat riwayat absensi...
+        </div>
+      </div>
+    `;
+  }
+
+  // ==========================================================
+  // AMBIL DETAIL DARI SERVER
+  // ==========================================================
+
+  console.log(
+    '[ABSENSI DETAIL] Memanggil getAbsensiDetail:',
+    item.id_pkl
+  );
+
+  google.script.run
+    .withSuccessHandler(function (result) {
+
+      console.log(
+        '[ABSENSI DETAIL] Result:',
+        result
+      );
+
+      if (!result || !result.success) {
+
+        console.error(
+          '[ABSENSI DETAIL] Gagal:',
+          result
+        );
+
+        if (calendar) {
+          calendar.innerHTML = `
+            <div style="
+              grid-column: 1 / -1;
+              padding:45px 20px;
+              text-align:center;
+              color:#dc2626;
+            ">
+              <i
+                class="fa-solid fa-circle-exclamation"
+                style="font-size:25px;"
+              ></i>
+
+              <div style="margin-top:10px;">
+                ${
+                  result && result.message
+                    ? escapeHtml(result.message)
+                    : 'Detail absensi gagal dimuat.'
+                }
+              </div>
+            </div>
+          `;
+        }
+
+        return;
+      }
+
+      absensiDetailData =
+        Array.isArray(result.data)
+          ? result.data.map(
+              normalizeAbsensiDetail
+            )
+          : [];
+
+      console.log(
+        '[ABSENSI DETAIL] Data detail:',
+        absensiDetailData
+      );
+
+      // Render kalender
+      renderAbsensiCalendar(
+        absensiDetailData
+      );
+
+    })
+    .withFailureHandler(function (error) {
+
+      console.error(
+        '[ABSENSI DETAIL] Error:',
+        error
+      );
+
+      if (calendar) {
+        calendar.innerHTML = `
+          <div style="
+            grid-column: 1 / -1;
+            padding:45px 20px;
+            text-align:center;
+            color:#dc2626;
+          ">
+            <i
+              class="fa-solid fa-circle-exclamation"
+              style="font-size:25px;"
+            ></i>
+
+            <div style="margin-top:10px;">
+              Gagal mengambil data absensi.
+            </div>
+          </div>
+        `;
+      }
+
+    })
+    .getAbsensiDetail(item.id_pkl);
+}
+
+
+/* ============================================================
+   LOAD DETAIL ABSENSI
+   ============================================================ */
+
+function loadAbsensiDetail(idPKL) {
+  console.log(
+    '[ABSENSI DETAIL] Memanggil getAbsensiDetail:',
+    idPKL
+  );
+
+  google.script.run
+    .withSuccessHandler(function (result) {
+      console.log(
+        '[ABSENSI DETAIL] Result:',
+        result
+      );
+
+      if (
+        !result ||
+        !result.success
+      ) {
+
+        showAbsensiDetailError(
+          result && result.message
+            ? result.message
+            : 'Detail absensi gagal dimuat.'
+        );
+
+        return;
+      }
+
+      absensiDetailData =
+        Array.isArray(result.data)
+          ? result.data.map(
+              normalizeAbsensiDetail
+            )
+          : [];
+
+      renderAbsensiCalendar(
+        absensiDetailData
+      );
+
+      renderAbsensiDetailSummary(
+        absensiDetailData
+      );
+    })
+    .withFailureHandler(function (error) {
+      console.error(
+        '[ABSENSI DETAIL] Error:',
+        error
+      );
+
+      showAbsensiDetailError(
+        error && error.message
+          ? error.message
+          : 'Detail absensi gagal dimuat.'
+      );
+    })
+    .getAbsensiDetail(idPKL);
+}
+
+
+/* ============================================================
+   NORMALIZE DETAIL
+   ============================================================ */
+
+function normalizeAbsensiDetail(item) {
+  item = item || {};
+
+  return {
+    id_absensi: String(
+      item.id_absensi ||
+      item.idAbsensi ||
+      ''
+    ).trim(),
+
+    id_pkl: String(
+      item.id_pkl ||
+      item.idPkl ||
+      ''
+    ).trim(),
+
+    tanggal: normalizeAbsensiDate(
+      item.tanggal
+    ),
+
+    jam_masuk: String(
+      item.jam_masuk ||
+      item.jamMasuk ||
+      ''
+    ).trim(),
+
+    foto_masuk: String(
+      item.foto_masuk ||
+      item.fotoMasuk ||
+      ''
+    ).trim(),
+
+    jarak_masuk: String(
+      item.jarak_masuk ||
+      item.jarakMasuk ||
+      ''
+    ).trim(),
+
+    jam_pulang: String(
+      item.jam_pulang ||
+      item.jamPulang ||
+      ''
+    ).trim(),
+
+    foto_pulang: String(
+      item.foto_pulang ||
+      item.fotoPulang ||
+      ''
+    ).trim(),
+
+    jarak_pulang: String(
+      item.jarak_pulang ||
+      item.jarakPulang ||
+      ''
+    ).trim(),
+
+    status: String(
+      item.status ||
+      ''
+    ).trim(),
+
+    keterangan: String(
+      item.keterangan ||
+      ''
+    ).trim(),
+
+    timestamp: String(
+      item.timestamp ||
+      ''
+    ).trim(),
+
+    id_jadwal: String(
+      item.id_jadwal ||
+      item.idJadwal ||
+      ''
+    ).trim(),
+
+    telat: String(
+      item.telat ||
+      ''
+    ).trim(),
+
+    jam_kerja: String(
+      item.jam_kerja ||
+      item.jamKerja ||
+      ''
+    ).trim()
+  };
+}
+
+
+/* ============================================================
+   NORMALIZE DATE ABSENSI
+   ============================================================ */
+
+function normalizeAbsensiDate(value) {
+  if (!value) return '';
+
+  if (
+    value instanceof Date
+  ) {
+    return formatAbsensiDate(
+      value
+    );
+  }
+
+  const text =
+    String(value).trim();
+
+  if (
+    /^\d{4}-\d{2}-\d{2}$/.test(text)
+  ) {
+    return text;
+  }
+
+  let match =
+    text.match(
+      /^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/
+    );
+
+  if (match) {
+    return (
+      match[3] +
+      '-' +
+      String(match[2])
+        .padStart(2, '0') +
+      '-' +
+      String(match[1])
+        .padStart(2, '0')
+    );
+  }
+
+  const parsed =
+    new Date(text);
+
+  if (
+    !isNaN(parsed.getTime())
+  ) {
+    return formatAbsensiDate(
+      parsed
+    );
+  }
+
+  return '';
+}
+
+
+/* ============================================================
+   FORMAT DATE ABSENSI
+   ============================================================ */
+
+function formatAbsensiDate(date) {
+  const year =
+    date.getFullYear();
+
+  const month =
+    String(
+      date.getMonth() + 1
+    ).padStart(2, '0');
+
+  const day =
+    String(
+      date.getDate()
+    ).padStart(2, '0');
+
+  return (
+    year +
+    '-' +
+    month +
+    '-' +
+    day
+  );
+}
+
+
+/* ============================================================
+   CHANGE DETAIL MONTH
+   ============================================================ */
+
+function changeDetailMonth(
+  offset
+) {
+  const value =
+    Number(offset);
+
+  if (
+    !Number.isFinite(value) ||
+    value === 0
+  ) {
+    return;
+  }
+
+  if (
+    !absensiDetailCurrentDate ||
+    isNaN(absensiDetailCurrentDate.getTime())
+  ) {
+    absensiDetailCurrentDate =
+      new Date();
+  }
+
+  absensiDetailCurrentDate =
+    new Date(
+      absensiDetailCurrentDate.getFullYear(),
+      absensiDetailCurrentDate.getMonth() + value,
+      1
+    );
+
+  renderAbsensiCalendar(
+    absensiDetailData
+  );
+}
+
+
+/* ============================================================
+   RENDER CALENDAR
+   ============================================================ */
+
+function renderAbsensiCalendar(data) {
+  const calendar =
+    document.getElementById('calendarGrid');
+
+  if (!calendar) {
+    console.warn(
+      '[ABSENSI DETAIL] calendarGrid tidak ditemukan.'
+    );
+    return;
+  }
+
+  data = Array.isArray(data) ? data : [];
+
+  if (
+    !absensiDetailCurrentDate ||
+    isNaN(absensiDetailCurrentDate.getTime())
+  ) {
+    absensiDetailCurrentDate = new Date();
+  }
+
+  const year =
+    absensiDetailCurrentDate.getFullYear();
+
+  const month =
+    absensiDetailCurrentDate.getMonth();
+
+  const monthNames = [
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
+  ];
+
+  const monthTitle =
+    document.getElementById(
+      'calendarMonthTitle'
+    );
+
+  if (monthTitle) {
+    monthTitle.textContent =
+      monthNames[month] +
+      ' ' +
+      year;
+  }
+
+  const daysInMonth =
+    new Date(
+      year,
+      month + 1,
+      0
+    ).getDate();
+
+  const firstDay =
+    new Date(
+      year,
+      month,
+      1
+    ).getDay();
+
+  // JavaScript: Minggu = 0, Senin = 1.
+  // Kalender dimulai dari Senin.
+  const mondayStart =
+    firstDay === 0
+      ? 6
+      : firstDay - 1;
+
+  let html = '';
+
+  // Kotak kosong sebelum tanggal 1.
+  for (
+    let i = 0;
+    i < mondayStart;
+    i++
+  ) {
+    html += `
+      <div
+        class="calendar-day empty"
+        aria-hidden="true"
+      ></div>
+    `;
+  }
+
+  // Tanggal dalam bulan.
+  for (
+    let day = 1;
+    day <= daysInMonth;
+    day++
+  ) {
+    const dateKey =
+      year +
+      '-' +
+      String(month + 1).padStart(2, '0') +
+      '-' +
+      String(day).padStart(2, '0');
+
+    const attendance =
+      findAttendanceByDate(
+        data,
+        dateKey
+      );
+
+    const hasAttendance =
+      !!attendance;
+
+    const late =
+      hasAttendance &&
+      isAbsensiLate(
+        attendance.telat
+      );
+
+    const status =
+      hasAttendance
+        ? String(
+            attendance.status ||
+            'Hadir'
+          ).trim()
+        : 'Tidak ada absensi';
+
+    let className =
+      'calendar-day';
+
+    if (!hasAttendance) {
+      className += ' absent';
+    } else if (late) {
+      className += ' late';
+    } else {
+      className += ' present';
+    }
+
+    html += `
+      <button
+        type="button"
+        class="${className}"
+        onclick="openAbsensiDateDetail('${dateKey}')"
+        title="${escapeHtml(status)}"
+      >
+        <span class="day-number">
+          ${day}
+        </span>
+
+        <span class="day-status">
+          ${
+            !hasAttendance
+              ? 'Tidak ada'
+              : late
+                ? 'Terlambat'
+                : escapeHtml(status)
+          }
+        </span>
+      </button>
+    `;
+  }
+
+  calendar.innerHTML =
+    html;
+}
+
+
+/* ============================================================
+   FIND ATTENDANCE BY DATE
+   ============================================================ */
+
+function findAttendanceByDate(
+  data,
+  date
+) {
+  if (
+    !Array.isArray(data)
+  ) {
+    return null;
+  }
+
+  return data.find(
+    function (item) {
+      return (
+        String(
+          item.tanggal || ''
+        ).trim() === date
+      );
+    }
+  ) || null;
+}
+
+
+/* ============================================================
+   OPEN DATE DETAIL
+   ============================================================ */
+
+function openAbsensiDateDetail(
+  date
+) {
+  const attendance =
+    findAttendanceByDate(
+      absensiDetailData,
+      date
+    );
+
+  const dateText =
+    formatTanggalIndonesia(
+      date
+    );
+
+  setValue(
+    'modalTanggal',
+    dateText
+  );
+
+  if (!attendance) {
+    setValue(
+      'modalStatus',
+      'Tidak Ada Absensi'
+    );
+
+    setValue(
+      'modalJamMasuk',
+      '-'
+    );
+
+    setValue(
+      'modalJamPulang',
+      '-'
+    );
+
+    setValue(
+      'modalTerlambat',
+      '-'
+    );
+
+    setValue(
+      'modalJamKerja',
+      '-'
+    );
+
+    setValue(
+      'modalJarakMasuk',
+      '-'
+    );
+
+    setValue(
+      'modalJarakPulang',
+      '-'
+    );
+
+    setValue(
+      'modalIdJadwal',
+      '-'
+    );
+
+    setValue(
+      'modalKeterangan',
+      '-'
+    );
+  } else {
+    setValue(
+      'modalStatus',
+      attendance.status ||
+      'Hadir'
+    );
+
+    setValue(
+      'modalJamMasuk',
+      attendance.jam_masuk ||
+      '-'
+    );
+
+    setValue(
+      'modalJamPulang',
+      attendance.jam_pulang ||
+      '-'
+    );
+
+    setValue(
+      'modalTerlambat',
+      attendance.telat ||
+      '0:00'
+    );
+
+    setValue(
+      'modalJamKerja',
+      attendance.jam_kerja ||
+      '-'
+    );
+
+    setValue(
+      'modalJarakMasuk',
+      formatAbsensiDistance(
+        attendance.jarak_masuk
+      )
+    );
+
+    setValue(
+      'modalJarakPulang',
+      formatAbsensiDistance(
+        attendance.jarak_pulang
+      )
+    );
+
+    setValue(
+      'modalIdJadwal',
+      attendance.id_jadwal ||
+      '-'
+    );
+
+    setValue(
+      'modalKeterangan',
+      attendance.keterangan ||
+      '-'
+    );
+  }
+
+  const modal =
+    document.getElementById(
+      'attendanceDetailModal'
+    );
+
+  if (modal) {
+    modal.classList.add('show');
+    modal.style.display = 'flex';
+  }
+}
+
+
+function formatAbsensiDistance(
+  value
+) {
+  const text =
+    String(
+      value ?? ''
+    ).trim();
+
+  if (!text) {
+    return '-';
+  }
+
+  const number =
+    Number(
+      text.replace(',', '.')
+    );
+
+  if (!isNaN(number)) {
+    return number + ' m';
+  }
+
+  return text;
+}
+
+
+/* ============================================================
+   FORMAT TANGGAL INDONESIA
+   ============================================================ */
+
+function formatTanggalIndonesia(
+  date
+) {
+  if (!date) return '-';
+
+  const parts =
+    String(date).split('-');
+
+  if (parts.length !== 3) {
+    return date;
+  }
+
+  const bulan = [
+    'Januari',
+    'Februari',
+    'Maret',
+    'April',
+    'Mei',
+    'Juni',
+    'Juli',
+    'Agustus',
+    'September',
+    'Oktober',
+    'November',
+    'Desember'
+  ];
+
+  const year =
+    Number(parts[0]);
+
+  const month =
+    Number(parts[1]) - 1;
+
+  const day =
+    Number(parts[2]);
+
+  if (
+    month < 0 ||
+    month > 11
+  ) {
+    return date;
+  }
+
+  return (
+    day +
+    ' ' +
+    bulan[month] +
+    ' ' +
+    year
+  );
+}
+
+
+/* ============================================================
+   RENDER DETAIL SUMMARY
+   ============================================================ */
+
+function renderAbsensiDetailSummary(
+  data
+) {
+  const hadir =
+    data.filter(function (item) {
+      const status =
+        String(
+          item.status || ''
+        ).toLowerCase();
+
+      return (
+        status === 'hadir' ||
+        status === 'masuk'
+      );
+    }).length;
+
+  const tidakHadir =
+    data.filter(function (item) {
+      const status =
+        String(
+          item.status || ''
+        ).toLowerCase();
+
+      return (
+        status === 'izin' ||
+        status === 'sakit' ||
+        status === 'tidak hadir' ||
+        status === 'alpha' ||
+        status === 'alpa'
+      );
+    }).length;
+
+  const terlambat =
+    data.filter(function (item) {
+      return isAbsensiLate(
+        item.telat
+      );
+    }).length;
+
+  setValue(
+    'absensiDetailHadir',
+    hadir
+  );
+
+  setValue(
+    'absensiDetailTidakHadir',
+    tidakHadir
+  );
+
+  setValue(
+    'absensiDetailTerlambat',
+    terlambat
+  );
+}
+
+
+/* ============================================================
+   CHECK LATE
+   ============================================================ */
+
+function isAbsensiLate(value) {
+  if (
+    value === null ||
+    value === undefined ||
+    value === ''
+  ) {
+    return false;
+  }
+
+  const text =
+    String(value)
+      .trim()
+      .toLowerCase();
+
+  if (
+    text === '0' ||
+    text === '0:00' ||
+    text === '00:00' ||
+    text === '00:00:00' ||
+    text === '0:00:00'
+  ) {
+    return false;
+  }
+
+  /*
+   * Jika berupa angka.
+   */
+
+  if (
+    !isNaN(Number(text))
+  ) {
+    return Number(text) > 0;
+  }
+
+  /*
+   * Format jam.
+   */
+
+  const match =
+    text.match(
+      /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/
+    );
+
+  if (!match) {
+    return false;
+  }
+
+  const hour =
+    Number(match[1]);
+
+  const minute =
+    Number(match[2]);
+
+  const second =
+    Number(match[3] || 0);
+
+  return (
+    hour > 0 ||
+    minute > 0 ||
+    second > 0
+  );
+}
+
+
+/* ============================================================
+   DELETE ABSENSI
+   ============================================================ */
+
+function deleteAbsensi(id) {
+  const item =
+    absensiData.find(
+      function (data) {
+        return String(
+          data.id_pkl || ''
+        ).trim() ===
+        String(id || '').trim();
+      }
+    );
+
+  if (!item) {
+    showAbsensiToast(
+      'Data absensi tidak ditemukan.',
+      'error'
+    );
+
+    return;
+  }
+
+  absensiSelectedItem =
+    item;
+
+  setValue(
+    'deleteStudentName',
+    item.nama_siswa || '-'
+  );
+
+  showAbsensiModal(
+    'deleteModal'
+  );
+}
+
+
+/* ============================================================
+   CONFIRM DELETE ABSENSI
+   ============================================================ */
+
+function confirmDeleteAbsensi() {
+  if (
+    !absensiSelectedItem
+  ) {
+    return;
+  }
+
+  const id =
+    absensiSelectedItem.id_pkl;
+
+  const button =
+    document.getElementById(
+      'confirmDeleteAbsensiButton'
+    );
+
+  if (button) {
+    button.disabled = true;
+
+    button.innerHTML = `
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      Menghapus...
+    `;
+  }
+
+  google.script.run
+    .withSuccessHandler(function (result) {
+      if (
+        result &&
+        result.success
+      ) {
+
+        closeAbsensiModal(
+          'deleteModal'
+        );
+
+        showAbsensiToast(
+          result.message ||
+          'Data absensi berhasil dihapus.',
+          'success'
+        );
+
+        absensiSelectedItem =
+          null;
+
+        loadAbsensiData();
+
+      } else {
+
+        showAbsensiToast(
+          result && result.message
+            ? result.message
+            : 'Gagal menghapus data absensi.',
+          'error'
+        );
+      }
+
+      resetDeleteAbsensiButton();
+    })
+    .withFailureHandler(function (error) {
+      console.error(
+        '[ABSENSI] hapusDataAbsensi error:',
+        error
+      );
+
+      showAbsensiToast(
+        error && error.message
+          ? error.message
+          : 'Gagal menghapus data absensi.',
+        'error'
+      );
+
+      resetDeleteAbsensiButton();
+    })
+    .hapusDataAbsensi(id);
+}
+
+
+/* ============================================================
+   RESET DELETE BUTTON
+   ============================================================ */
+
+function resetDeleteAbsensiButton() {
+  const button =
+    document.getElementById(
+      'confirmDeleteAbsensiButton'
+    );
+
+  if (!button) return;
+
+  button.disabled = false;
+
+  button.innerHTML = `
+    <i class="fa-solid fa-trash"></i>
+    Hapus
+  `;
+}
+
+
+/* ============================================================
+   SHOW DETAIL LOADING
+   ============================================================ */
+
+function showAbsensiDetailLoading() {
+  const calendar =
+    document.getElementById(
+      'calendarGrid'
+    );
+
+  if (calendar) {
+    calendar.innerHTML = `
+      <div style="
+        min-height:300px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        flex-direction:column;
+        color:#6b7280;
+      ">
+
+        <i
+          class="fa-solid fa-spinner fa-spin"
+          style="
+            font-size:30px;
+            margin-bottom:12px;
+          "
+        ></i>
+
+        <div>
+          Memuat detail absensi...
+        </div>
+
+      </div>
+    `;
+  }
+}
+
+
+/* ============================================================
+   SHOW DETAIL ERROR
+   ============================================================ */
+
+function showAbsensiDetailError(
+  message
+) {
+  const calendar =
+    document.getElementById(
+      'calendarGrid'
+    );
+
+  if (!calendar) {
+    return;
+  }
+
+  calendar.innerHTML = `
+    <div style="
+      grid-column:1 / -1;
+      min-height:260px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      text-align:center;
+      color:#dc2626;
+      padding:40px 20px;
+    ">
+      <i
+        class="fa-solid fa-circle-exclamation"
+        style="
+          font-size:30px;
+          margin-bottom:12px;
+        "
+      ></i>
+
+      <strong>
+        Detail absensi gagal dimuat.
+      </strong>
+
+      <small style="
+        display:block;
+        margin-top:8px;
+        color:#6b7280;
+      ">
+        ${escapeHtml(
+          message ||
+          'Terjadi kesalahan.'
+        )}
+      </small>
+    </div>
+  `;
+}
+
+
+/* ============================================================
+   SHOW ABSENSI LOAD ERROR
+   ============================================================ */
+
+function showAbsensiLoadError(
+  message
+) {
+  const tbody =
+    document.getElementById(
+      'absensiTableBody'
+    );
+
+  if (tbody) {
+    tbody.innerHTML = `
+      <tr>
+
+        <td colspan="8" style="
+          padding:45px;
+          text-align:center;
+          color:#dc2626;
+        ">
+
+          <i
+            class="fa-solid fa-circle-exclamation"
+            style="
+              font-size:30px;
+              margin-bottom:12px;
+            "
+          ></i>
+
+          <br>
+
+          <strong>
+            Data absensi gagal dimuat.
+          </strong>
+
+          <small style="
+            display:block;
+            margin-top:8px;
+            color:#6b7280;
+          ">
+            ${escapeHtml(
+              message ||
+              'Terjadi kesalahan.'
+            )}
+          </small>
+
+        </td>
+
+      </tr>
+    `;
+
+    return;
+  }
+
+  const content =
+    document.getElementById(
+      'dashboardContent'
+    );
+
+  if (content) {
+    content.innerHTML = `
+      <div class="page-error">
+
+        <div class="page-error-inner">
+
+          <i class="
+            fa-solid
+            fa-circle-exclamation
+          "></i>
+
+          <div>
+            Data absensi gagal dimuat.
+          </div>
+
+          <small style="
+            display:block;
+            margin-top:8px;
+            color:#6b7280;
+          ">
+            ${escapeHtml(
+              message ||
+              'Terjadi kesalahan.'
+            )}
+          </small>
+
+        </div>
+
+      </div>
+    `;
+  }
+}
+
+
+/* ============================================================
+   MODAL ABSENSI
+   ============================================================ */
+
+function showAbsensiModal(id) {
+  const modal =
+    document.getElementById(id);
+
+  if (!modal) {
+    console.warn(
+      '[ABSENSI MODAL] Tidak ditemukan:',
+      id
+    );
+
+    return;
+  }
+
+  modal.style.display =
+    'flex';
+}
+
+
+/* ============================================================
+   CLOSE ABSENSI MODAL
+   ============================================================ */
+
+function closeAbsensiModal(id) {
+  const modal =
+    document.getElementById(id);
+
+  if (!modal) return;
+
+  modal.style.display =
+    'none';
+
+  if (
+    id ===
+    'deleteModal'
+  ) {
+    resetDeleteAbsensiButton();
+  }
+}
+
+
+function closeAttendanceModal() {
+  const modal =
+    document.getElementById(
+      'attendanceDetailModal'
+    );
+
+  if (!modal) {
+    return;
+  }
+
+  modal.classList.remove('show');
+  modal.style.display = 'none';
+}
+
+
+function closeModalFromOverlay(
+  event
+) {
+  if (
+    event &&
+    event.target &&
+    event.target.id ===
+      'attendanceDetailModal'
+  ) {
+    closeAttendanceModal();
+  }
+}
+
+
+function closeDeleteFromOverlay(
+  event
+) {
+  if (
+    event &&
+    event.target &&
+    event.target.id ===
+      'deleteModal'
+  ) {
+    closeAbsensiModal(
+      'deleteModal'
+    );
+  }
+}
+
+
+/* ============================================================
+   DATE DETAIL MODAL
+   ============================================================ */
+
+function showAbsensiDateModal() {
+  const modal =
+    document.getElementById(
+      'attendanceDetailModal'
+    );
+
+  if (!modal) {
+    console.warn(
+      '[ABSENSI] attendanceDetailModal tidak ditemukan.'
+    );
+    return;
+  }
+
+  modal.classList.add('show');
+  modal.style.display = 'flex';
+}
+
+
+/* ============================================================
+   CLOSE DATE DETAIL
+   ============================================================ */
+
+function closeAbsensiDateModal() {
+  closeAttendanceModal();
+}
+
+
+/* ============================================================
+   TOAST ABSENSI
+   ============================================================ */
+
+function showAbsensiToast(
+  message,
+  type
+) {
+  let toast =
+    document.getElementById(
+      'absensiToast'
+    );
+
+  if (!toast) {
+    toast =
+      document.createElement(
+        'div'
+      );
+
+    toast.id =
+      'absensiToast';
+
+    toast.style.position =
+      'fixed';
+
+    toast.style.right =
+      '24px';
+
+    toast.style.bottom =
+      '24px';
+
+    toast.style.zIndex =
+      '999999';
+
+    toast.style.padding =
+      '13px 18px';
+
+    toast.style.borderRadius =
+      '10px';
+
+    toast.style.color =
+      '#ffffff';
+
+    toast.style.fontSize =
+      '13px';
+
+    toast.style.boxShadow =
+      '0 10px 30px rgba(0,0,0,.18)';
+
+    document.body.appendChild(
+      toast
+    );
+  }
+
+  toast.textContent =
+    message || '';
+
+  toast.style.background =
+    type === 'error'
+      ? '#dc2626'
+      : '#16a34a';
+
+  toast.style.display =
+    'block';
+
+  clearTimeout(
+    toast._timer
+  );
+
+  toast._timer =
+    setTimeout(
+      function () {
+        toast.style.display =
+          'none';
+      },
+      3000
+    );
+}
+
+
+/* ============================================================
+   CHANGE CALENDAR MONTH
+   ============================================================ */
+
+function changeAbsensiMonth(
+  direction
+) {
+  changeDetailMonth(
+    direction
+  );
+}
+
+
+/* ============================================================
+   INIT CALENDAR MONTH
+   ============================================================ */
+
+function initializeAbsensiCalendar() {
+  absensiDetailCurrentDate =
+    new Date();
+
+  renderAbsensiCalendar(
+    absensiDetailData
+  );
+}
+
+
+/* ============================================================
+   GLOBAL ABSENSI FUNCTIONS
+   ============================================================ */
+
+window.openAbsensiPage =
+  openAbsensiPage;
+
+window.initializeAbsensi =
+  initializeAbsensi;
+
+window.__satuGarisInitializeAbsensi =
+  initializeAbsensi;
+
+window.loadAbsensiData =
+  loadAbsensiData;
+
+window.refreshAbsensiData =
+  refreshAbsensiData;
+
+window.filterAbsensiTable =
+  filterAbsensiTable;
+
+window.changeAbsensiPage =
+  changeAbsensiPage;
+
+window.openAbsensiDetail =
+  openAbsensiDetail;
+
+window.openAbsensiDateDetail =
+  openAbsensiDateDetail;
+
+window.deleteAbsensi =
+  deleteAbsensi;
+
+window.confirmDeleteAbsensi =
+  confirmDeleteAbsensi;
+
+window.closeAbsensiModal =
+  closeAbsensiModal;
+
+window.closeAbsensiDateModal =
+  closeAbsensiDateModal;
+
+window.changeAbsensiMonth =
+  changeAbsensiMonth;
+
+window.changeDetailMonth =
+  changeDetailMonth;
+
+window.closeAttendanceModal =
+  closeAttendanceModal;
+
+window.closeModalFromOverlay =
+  closeModalFromOverlay;
+
+window.closeDeleteFromOverlay =
+  closeDeleteFromOverlay;
+
+window.closeDeleteModal =
+  function () {
+    closeAbsensiModal(
+      'deleteModal'
+    );
+  };
+/* ============================================================
+   OPEN LAPORAN
+   ============================================================ */
+
+function openLaporanPage() {
+  setActiveMenu('menuLaporan');
+
+  const content =
+    document.getElementById('dashboardContent');
+
+  if (!content) return;
+
+  const title =
+    document.getElementById('pageTitle');
+
+  const subtitle =
+    document.getElementById('pageSubtitle');
+
+  if (title) title.textContent = 'Laporan';
+
+  if (subtitle) {
+    subtitle.textContent =
+      'Laporan kegiatan peserta PKL';
+  }
+
+  content.innerHTML = `
+    <div class="page-loading">
+      <div class="page-loading-inner">
+        <i class="fa-solid fa-spinner spin"></i>
+        <div>Halaman Laporan sedang disiapkan...</div>
+      </div>
+    </div>
+  `;
+
+  setTimeout(function () {
+    content.innerHTML = `
+      <div class="page-error">
+        <div class="page-error-inner">
+          <i class="fa-solid fa-file-lines"></i>
+          <div>Halaman Laporan belum dibuat.</div>
+        </div>
+      </div>
+    `;
+  }, 300);
+}
+
+/* ============================================================
+   LOAD DASHBOARD DATA
+   ============================================================ */
+
+function loadDashboardData() {
+  google.script.run
+    .withSuccessHandler(function (data) {
+      console.log('Dashboard data:', data);
+
+      if (!data || !data.success) return;
+
+      setValue('totalUser', data.totalUser);
+      setValue('totalHadir', data.hadir);
+      setValue('totalTelat', data.telat);
+      setValue('totalTidakHadir', data.tidakHadir);
+      setValue('userAktif', data.userAktif);
+
+      setValue('summaryHadir', data.hadir);
+      setValue('summaryTelat', data.telat);
+      setValue('summaryTidakHadir', data.tidakHadir);
+
+      loadRecentAttendance(data);
+    })
+    .withFailureHandler(function (error) {
+      console.error('Data dashboard error:', error);
+    })
+    .getDashboardData();
+}
+
+/* ============================================================
+   RECENT ATTENDANCE
+   ============================================================ */
+
+function loadRecentAttendance(data) {
+  const body =
+    document.getElementById('recentAttendanceBody');
+
+  if (!body) return;
+
+  if (
+    !data ||
+    !Array.isArray(data.recentAttendance)
+  ) {
+    return;
+  }
+
+  const rows = data.recentAttendance;
+
+  if (!rows.length) {
+    body.innerHTML = `
+      <tr>
+        <td colspan="4">
+          <div class="empty-state">
+            <i class="fa-regular fa-calendar-xmark"></i>
+            Belum ada data absensi.
+          </div>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  body.innerHTML = rows.map(function (item) {
+    return `
+      <tr>
+        <td>
+          ${escapeHtml(
+            item.id_pkl ||
+            item.idPkl ||
+            '-'
+          )}
+        </td>
+
+        <td>
+          ${escapeHtml(
+            item.nama_siswa ||
+            item.nama ||
+            '-'
+          )}
+        </td>
+
+        <td>
+          ${escapeHtml(
+            item.jam_masuk ||
+            item.jamMasuk ||
+            '-'
+          )}
+        </td>
+
+        <td>
+          ${escapeHtml(
+            item.status ||
+            '-'
+          )}
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+/* ============================================================
+   DASHBOARD ERROR
+   ============================================================ */
+
+function showDashboardError(message) {
+  dashboardPage.innerHTML = `
+    <div class="page-error">
+      <div class="page-error-inner">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <div>
+          ${escapeHtml(
+            message ||
+            'Dashboard gagal dimuat.'
+          )}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ============================================================
+   ESCAPE HTML
+   ============================================================ */
+
+function escapeHtml(value) {
+  const div = document.createElement('div');
+
+  div.textContent =
+    value === null ||
+    value === undefined
+      ? ''
+      : String(value);
+
+  return div.innerHTML;
+}
+
+/* ============================================================
+   ESCAPE JAVASCRIPT
+   ============================================================ */
+
+function escapeJs(value) {
+  return String(
+    value === null ||
+    value === undefined
+      ? ''
+      : value
+  )
+    .replace(/\\/g, '\\\\')
+    .replace(/'/g, "\\'")
+    .replace(/\r/g, '\\r')
+    .replace(/\n/g, '\\n');
+}
+
+/* ============================================================
+   SET VALUE
+   ============================================================ */
+
+function setValue(id, value) {
+  const element = document.getElementById(id);
+
+  if (element) {
+    element.textContent =
+      value === undefined ||
+      value === null
+        ? 0
+        : value;
+  }
+}
+
+/* ============================================================
+   NOTIFICATION
+   ============================================================ */
+
+function showDashboardNotification() {
+  alert('Belum ada notifikasi.');
+}
+
+/* ============================================================
+   LOGOUT
+   ============================================================ */
+
+function logout() {
+  try {
+    localStorage.removeItem(
+      ADMIN_STORAGE_KEY
+    );
+  } catch (error) {
+    console.error(
+      'Gagal menghapus login:',
+      error
+    );
+  }
+
+  dashboardPage.style.display = 'none';
+  dashboardPage.innerHTML = '';
+
+  loginPage.style.display = 'flex';
+
+  passwordInput.value = '';
+
+  clearMessage();
+
+  setLoginLoading(false);
+
+  usernameInput.focus();
+}
+
+/* ============================================================
+   LOGIN LOADING
+   ============================================================ */
+
+function setLoginLoading(loading) {
+  loginButton.disabled = loading;
+
+  if (loading) {
+    buttonText.textContent = 'Memeriksa...';
+    buttonIcon.className =
+      'fa-solid fa-spinner spin';
+  } else {
+    buttonText.textContent = 'Masuk';
+    buttonIcon.className =
+      'fa-solid fa-arrow-right';
+  }
+}
+
+/* ============================================================
+   MESSAGE
+   ============================================================ */
+
+function clearMessage() {
+  loginMessage.textContent = '';
+  loginMessage.className = 'login-message';
+}
+
+function showError(message) {
+  loginMessage.textContent = message;
+  loginMessage.className =
+    'login-message error';
+}
+
+function showSuccess(message) {
+  loginMessage.textContent = message;
+  loginMessage.className =
+    'login-message success';
+}
+
+/* ============================================================
+   LOAD REMEMBERED USERNAME
+   ============================================================ */
+
+function loadRememberedUsername() {
+  try {
+    const savedUsername =
+      localStorage.getItem(
+        USERNAME_STORAGE_KEY
+      );
+
+    if (savedUsername) {
+      usernameInput.value = savedUsername;
+      rememberCheckbox.checked = true;
+    }
+  } catch (error) {
+    console.error(
+      'Gagal membaca username:',
+      error
+    );
+  }
+}
+
+/* ============================================================
+   CHECK SAVED LOGIN
+   ============================================================ */
+
+function checkSavedLogin() {
+  let savedAdmin = null;
+
+  try {
+    savedAdmin =
+      localStorage.getItem(
+        ADMIN_STORAGE_KEY
+      );
+  } catch (error) {
+    console.error(
+      'Gagal membaca localStorage:',
+      error
+    );
+  }
+
+  if (!savedAdmin) {
+    loginPage.style.display = 'flex';
+    dashboardPage.style.display = 'none';
+    return;
+  }
+
+  try {
+    const admin = JSON.parse(savedAdmin);
+
+    if (!admin || !admin.username) {
+      localStorage.removeItem(
+        ADMIN_STORAGE_KEY
+      );
+
+      loginPage.style.display = 'flex';
+      dashboardPage.style.display = 'none';
+      return;
+    }
+
+    openDashboard();
+  } catch (error) {
+    console.error(
+      'Data login tersimpan rusak:',
+      error
+    );
+
+    localStorage.removeItem(
+      ADMIN_STORAGE_KEY
+    );
+
+    loginPage.style.display = 'flex';
+    dashboardPage.style.display = 'none';
+  }
+}
+
+/* ============================================================
+   START APPLICATION
+   ============================================================ */
+
+loadRememberedUsername();
+checkSavedLogin();
+
+/* ============================================================
+   GLOBAL FUNCTIONS
+   ============================================================ */
+
+window.openDashboardHome = openDashboardHome;
+window.openSiswaPage = openSiswaPage;
+window.openAbsensiPage = openAbsensiPage;
+window.openLaporanPage = openLaporanPage;
+
+window.openTambahSiswa = openTambahSiswa;
+window.editSiswa = editSiswa;
+window.submitSiswaForm = submitSiswaForm;
+window.viewSiswa = viewSiswa;
+window.editFromDetail = editFromDetail;
+window.deleteSiswa = deleteSiswa;
+window.confirmDeleteSiswa = confirmDeleteSiswa;
+window.refreshSiswaData = refreshSiswaData;
+window.closeSiswaForm = closeSiswaForm;
+window.closeSiswaDetail = closeSiswaDetail;
+window.closeDeleteModal = closeDeleteModal;
+window.changeSiswaPage = changeSiswaPage;
+window.showDashboardNotification = showDashboardNotification;
+window.logout = logout;
+window.__satuGarisInitializeSiswa = initializeSiswa;
+</script>
+
+</body>
+</html>
